@@ -1,0 +1,6 @@
+@com.project.pagapoco.app.webapi_HostAddress = http://localhost:5208
+
+GET {{com.project.pagapoco.app.webapi_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

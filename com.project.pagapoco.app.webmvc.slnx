@@ -1,0 +1,16 @@
+<Solution>
+  <Folder Name="/app/">
+    <Project Path="src/com.project.pagapoco.app.console/com.project.pagapoco.app.console.csproj" />
+    <Project Path="src/com.project.pagapoco.app.webapi/com.project.pagapoco.app.webapi.csproj" />
+    <Project Path="src/com.project.pagapoco.app.webmvc/com.project.pagapoco.app.webmvc.csproj" />
+  </Folder>
+  <Folder Name="/core/">
+    <Project Path="src/com.project.pagapoco.core.business/com.project.pagapoco.core.business.csproj" />
+    <Project Path="src/com.project.pagapoco.core.config/com.project.pagapoco.core.config.csproj" />
+    <Project Path="src/com.project.pagapoco.core.data/com.project.pagapoco.core.data.csproj" />
+    <Project Path="src/com.project.pagapoco.core.entities/com.project.pagapoco.core.entities.csproj" />
+  </Folder>
+  <Folder Name="/test/">
+    <Project Path="test/com.project.pagapoco.tests/com.project.pagapoco.tests.csproj" />
+  </Folder>
+</Solution>
