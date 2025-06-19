@@ -1,6 +1,16 @@
-@com.project.pagapoco.app.webapi_HostAddress = http://localhost:5208
+@base = http://localhost:5208
 
 GET {{com.project.pagapoco.app.webapi_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
+
+GET {{base}}/api/User/list
+Accept: application/json
+
+###
+
+GET {{base}}/api/User/
 Accept: application/json
 
 ###

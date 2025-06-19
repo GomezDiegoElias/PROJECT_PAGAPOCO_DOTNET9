@@ -1,3 +1,7 @@
+using com.project.pagapoco.core.business;
+using com.project.pagapoco.core.data;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -5,6 +9,19 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
+
+// Configuración de la base de datos
+var bdConnectionString = builder.Configuration.GetConnectionString("BDConnectionString")
+    ?? throw new InvalidOperationException("No se encontró 'BDConnectionString' en la configuración.");
+
+// Registrar DbContext
+builder.Services.AddDbContext<AppDbContext>(options =>
+    options.UseSqlServer(bdConnectionString)
+);
+
+// Registrar servicios
+builder.Services.AddScoped<UserRepository, UserRepositoryImp>();
+builder.Services.AddScoped<UserService, UserServiceImp>();
 
 var app = builder.Build();
 
