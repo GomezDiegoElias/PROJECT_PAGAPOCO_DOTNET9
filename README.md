@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="./pagapoco-banner.jpg" alt="PAGAPOCO Banner" width="600"/>
+</p>
+
 # PagaPoco WEB
 
-PagaPoco es una plataforma de ventas al público que funciona como un marketplace. Permite a los usuarios explorar productos, comparar precios y realizar compras de forma rápida y segura. Está diseñada para ofrecer una experiencia de compra simple, accesible y con precios competitivos
+Proyecto en .NET 9 para gestionar pagos simples y rápidos, con integración a base de datos, endpoints REST y pruebas automatizadas.
