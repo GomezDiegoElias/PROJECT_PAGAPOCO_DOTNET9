@@ -12,15 +12,20 @@ namespace com.project.pagapoco.core.entities
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
-        [Column("first_name", TypeName = "varchar(50)"), NotNull]
-        public string FirstName { get; set; }
+        [Required]
+        [Column("first_name", TypeName = "varchar(50)")]
+        public string FirstName { get; set; } = string.Empty;
 
         [Column("last_name", TypeName = "varchar(50)")]
-        public string LastName { get; set; }
-        public string Email { get; set; }
+        public string? LastName { get; set; }
 
-        [Column("password", TypeName = "varchar(150)"), NotNull]
-        public string Password { get; set; }
+        [Required]
+        [EmailAddress]
+        public string Email { get; set; } = string.Empty;
+
+        [Required]
+        [Column("password", TypeName = "varchar(150)")]
+        public string Password { get; set; } = string.Empty;
 
         public User() { }
         public User(int id, string firstName, string lastName, string email, string password)

@@ -23,10 +23,23 @@ namespace com.project.pagapoco.app.webapi.Controllers
             return _userService.findAll();
         }
 
-        [HttpGet]
+        /*[HttpGet]
         public async Task<List<User>> getAllUsersAsync()
         {
             return await _userService.findAllAsync();
+        }*/
+
+        [HttpGet] // -> /api/User?pageIndex=1&pageSize=10
+        public async Task<List<User>> getAllUserPagination
+        (
+            [FromQuery] int pageIndex = 1,
+            [FromQuery] int pageSize = 10
+        )
+        {
+
+            var results = await _userService.getAllUserPagination(pageIndex, pageSize);
+            return results;
+
         }
 
     }

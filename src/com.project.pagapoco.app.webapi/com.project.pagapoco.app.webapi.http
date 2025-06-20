@@ -10,7 +10,17 @@ Accept: application/json
 
 ###
 
-GET {{base}}/api/User/
+#GET {{base}}/api/User/
+#Accept: application/json
+
+###
+
+GET {{base}}/api/User?pageIndex=1&pageSize=5
+Accept: application/json
+
+###
+
+GET {{base}}/api/User
 Accept: application/json
 
 ###

@@ -10,5 +10,7 @@ namespace com.project.pagapoco.core.business
         User? findById(int id);
         Task<User?> findByIdAsync(int id);
 
+        Task<List<User>> getAllUserPagination(int pageIndex, int pageSize);
+
     }
 }
