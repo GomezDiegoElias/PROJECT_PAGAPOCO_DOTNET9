@@ -88,5 +88,10 @@ namespace com.project.pagapoco.core.business
             return user;
 
         }
+
+        public async Task<List<User>> getAllUserPagination(int pageIndex, int pageSize)
+        {
+            return await _userRepository.getPaginationUser(pageIndex, pageSize);
+        }
     }
 }

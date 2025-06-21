@@ -47,5 +47,9 @@ namespace com.project.pagapoco.core.data
             return await _dbContext.Users.FindAsync(id);
         }
 
+        public async Task<List<User>> getPaginationUser(int pageIndex, int pageSize)
+        {
+            return await _dbContext.getUserPagination(pageIndex, pageSize);
+        }
     }
 }

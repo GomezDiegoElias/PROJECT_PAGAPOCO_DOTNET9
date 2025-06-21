@@ -16,5 +16,7 @@ namespace com.project.pagapoco.core.data
         public User? FindById(int id);
         public Task<User?> FindByIdAsync(int id);
 
+        public Task<List<User>> getPaginationUser(int pageIndex, int pageSize);
+
     }
 }
