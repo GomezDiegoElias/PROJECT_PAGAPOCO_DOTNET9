@@ -9,6 +9,7 @@
     <Project Path="src/com.project.pagapoco.core.config/com.project.pagapoco.core.config.csproj" />
     <Project Path="src/com.project.pagapoco.core.data/com.project.pagapoco.core.data.csproj" />
     <Project Path="src/com.project.pagapoco.core.entities/com.project.pagapoco.core.entities.csproj" />
+    <Project Path="src/com.project.pagapoco.core.exceptions/com.project.pagapoco.core.exceptions.csproj" Id="30512311-482c-4b2e-8486-b08cc9f3b7bf" />
   </Folder>
   <Folder Name="/test/">
     <Project Path="test/com.project.pagapoco.tests/com.project.pagapoco.tests.csproj" />

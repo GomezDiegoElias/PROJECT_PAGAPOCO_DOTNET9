@@ -1,5 +1,6 @@
 ﻿using com.project.pagapoco.core.business;
-using com.project.pagapoco.core.data;
+using com.project.pagapoco.core.business.Service;
+using com.project.pagapoco.core.data.Repository;
 using com.project.pagapoco.core.entities;
 using Moq;
 

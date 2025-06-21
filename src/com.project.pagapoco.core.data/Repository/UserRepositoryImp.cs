@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using com.project.pagapoco.core.entities;
 using Microsoft.EntityFrameworkCore;
 
-namespace com.project.pagapoco.core.data
+namespace com.project.pagapoco.core.data.Repository
 {
     public class UserRepositoryImp : UserRepository
     {
@@ -19,30 +19,7 @@ namespace com.project.pagapoco.core.data
             _dbContext = dbContext;
         }
 
-        // Método para obtener todos los usuarios
-
-        // forma 1
-        public List<User> FindAll()
-        {
-            return _dbContext.Users.ToList();
-        }
-
-        // forma 2
-        public async Task<List<User>> FindAllAsync()
-        {
-            return await _dbContext.Users.ToListAsync();
-        }
-
-        // Método para obtener un usuario por su ID
-
-        // forma 1
-        public User? FindById(int id)
-        {
-            return _dbContext.Users.Find(id);
-        }
-
-        // forma 2
-        public async Task<User?> FindByIdAsync(int id)
+        public async Task<User?> FindById(int id)
         {
             return await _dbContext.Users.FindAsync(id);
         }
@@ -51,5 +28,6 @@ namespace com.project.pagapoco.core.data
         {
             return await _dbContext.getUserPagination(pageIndex, pageSize);
         }
+
     }
 }

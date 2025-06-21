@@ -5,17 +5,12 @@ using System.Text;
 using System.Threading.Tasks;
 using com.project.pagapoco.core.entities;
 
-namespace com.project.pagapoco.core.data
+namespace com.project.pagapoco.core.data.Repository
 {
     public interface UserRepository
     {
 
-        public List<User> FindAll();
-        public Task<List<User>> FindAllAsync();
-
-        public User? FindById(int id);
-        public Task<User?> FindByIdAsync(int id);
-
+        public Task<User?> FindById(int id);
         public Task<List<User>> getPaginationUser(int pageIndex, int pageSize);
 
     }
