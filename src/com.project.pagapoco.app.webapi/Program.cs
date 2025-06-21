@@ -1,3 +1,4 @@
+//using com.project.pagapoco.app.webapi.dto.Mapper;
 using com.project.pagapoco.core.business;
 using com.project.pagapoco.core.data;
 using Microsoft.EntityFrameworkCore;
@@ -22,6 +23,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 // Registrar servicios
 builder.Services.AddScoped<UserRepository, UserRepositoryImp>();
 builder.Services.AddScoped<UserService, UserServiceImp>();
+//builder.Services.AddScoped<UserMapper>();
 
 var app = builder.Build();
 

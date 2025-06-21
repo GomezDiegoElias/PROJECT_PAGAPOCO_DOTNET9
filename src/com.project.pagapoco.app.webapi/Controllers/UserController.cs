@@ -1,46 +1,11 @@
-﻿using com.project.pagapoco.core.business;
-using com.project.pagapoco.core.entities;
-using Microsoft.AspNetCore.Mvc;
+﻿using com.project.pagapoco.app.webapi.Dto.Response;
 
 namespace com.project.pagapoco.app.webapi.Controllers
 {
-
-    [ApiController]
-    [Route("/api/[controller]")]
-    public class UserController : Controller
+    public interface UserController
     {
-
-        private readonly UserService _userService;
-
-        public UserController(UserService userController)
-        {
-            _userService = userController;
-        }
-
-        [HttpGet("list")]
-        public List<User> getAllUsers()
-        {
-            return _userService.findAll();
-        }
-
-        /*[HttpGet]
-        public async Task<List<User>> getAllUsersAsync()
-        {
-            return await _userService.findAllAsync();
-        }*/
-
-        [HttpGet] // -> /api/User?pageIndex=1&pageSize=10
-        public async Task<List<User>> getAllUserPagination
-        (
-            [FromQuery] int pageIndex = 1,
-            [FromQuery] int pageSize = 10
-        )
-        {
-
-            var results = await _userService.getAllUserPagination(pageIndex, pageSize);
-            return results;
-
-        }
+        //List<UserResponse> getUsers();
+        Task<List<UserResponse>> getUsersAsync(int pageIndex, int pageSize);
 
     }
 }
