@@ -1,6 +1,6 @@
 @base = http://localhost:5208
 
-GET {{base}}/api/users/list
+GET {{base}}/api/users
 Accept: application/json
 
 ###
@@ -10,7 +10,12 @@ Accept: application/json
 
 ###
 
-GET {{base}}/api/users
+GET {{base}}/api/users/5
 Accept: application/json
+
+###
+
+#GET {{base}}/api/users/list
+#Accept: application/json
 
 ###

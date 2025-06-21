@@ -1,7 +1,7 @@
 ﻿using com.project.pagapoco.app.webapi.Dto.Response;
 using com.project.pagapoco.app.webapi.Mapper;
-using com.project.pagapoco.core.business;
-using com.project.pagapoco.core.entities;
+using com.project.pagapoco.core.business.Service;
+using com.project.pagapoco.core.exceptions;
 using Microsoft.AspNetCore.Mvc;
 
 namespace com.project.pagapoco.app.webapi.Controllers
@@ -27,84 +27,67 @@ namespace com.project.pagapoco.app.webapi.Controllers
 
         // endpoint -> /api/User?pageIndex=1&pageSize=10
         [HttpGet]
-        public async Task<List<UserResponse>> getUsersAsync(
+        public async Task<ActionResult<ApiResponse<List<UserResponse>>>> getAllUsers(
             [FromQuery] int pageIndex = 1,
             [FromQuery] int pageSize = 10
         )
         {
-            List<User> users = await _userService.getAllUserPagination(pageIndex, pageSize);
-            return users
+
+            //List<User> users
+            var users = await _userService.getAllUserPagination(pageIndex, pageSize);
+
+            var usersDtos = users
                 .Select(user => UserMapper.UserToUserResponse(user))
                 .ToList();
+
+            return Ok(new ApiResponse<List<UserResponse>>(
+                    "Success",
+                    "Users retrieved successfully",
+                    usersDtos
+                ));
+
         }
 
-        // endpoint -> /api/User/list
-        /*[HttpGet("list")]
-        public List<UserResponse> getUsers()
-        {
-            List<User> users = _userService.findAll();
-            return users
-                .Select(user => UserMapper.UserToUserResponse(user))
-                .ToList();
-        }*/
-
-        // ░░░░░░░░░░░░░░░░░░░░░░░░░░ PRUEBAS ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
-
-        // Prueba 1
-        /*[HttpGet("list")]
-        public List<User> getAllUsers()
-        {
-            return _userService.findAll();
-        }*/
-
-        // Prueba 2 con mapeo
-        /*[HttpGet("list")]
-        public List<UserResponse> GetUser()
-        {
-            List<User> users = _userService.findAll();
-            List<UserResponse> response = users
-                .Select(user => UserMapper.UserToUserResponse(user)).ToList();
-            return response;
-        }*/
-
-        // Prueba 1
-        /*[HttpGet]
-        public async Task<List<User>> getAllUsersAsync()
-        {
-            return await _userService.findAllAsync();
-        }*/
-
-        /*[HttpGet] // -> /api/User?pageIndex=1&pageSize=10
-        public async Task<List<User>> getAllUserPagination
-        (
-            [FromQuery] int pageIndex = 1,
-            [FromQuery] int pageSize = 10
-        )
+        [HttpGet("{id}")]
+        public async Task<ActionResult<ApiResponse<UserResponse?>>> getUser(int id)
         {
 
-            List<User> results = await _userService.getAllUserPagination(pageIndex, pageSize);
-            return results;
+            // Pregunta para Joselo
+            // Porque es necesario el uso del try - catch en el controlador si ya estoy capturando en el servicio
+            // De no capturarlo aqui en el controlador me sale error "Unhandled"
 
-        }*/
+            try
+            {
+                // User user
+                var user = await _userService.getUserById(id);
 
-        // Prueba 2 con mapeo
-        /*[HttpGet] // -> /api/User?pageIndex=1&pageSize=10
-        public async Task<List<UserResponse>> getAllUserPagination
-        (
-            [FromQuery] int pageIndex = 1,
-            [FromQuery] int pageSize = 10
-        )
-        {
+                return Ok(new ApiResponse<UserResponse?>(
+                        "Success",
+                        "Users retrieved successfully",
+                        UserMapper.UserToUserResponse(user)
+                    ));
+            }
+            catch (NotFoundException ex)
+            {
+                return NotFound(new ApiResponse<string>(
+                        "Error",
+                        ex.Message,
+                        null
+                    ));
+            }
 
-            List<User> users = await _userService.getAllUserPagination(pageIndex, pageSize);
+            /*User user
+            var user = await _userService.getUserById(id);
+            ApiResponse<UserResponse?> response = new ApiResponse<UserResponse?>(
+                    "Success",
+                    "Users retrieved successfully",
+                    UserMapper.UserToUserResponse(user)
+                );
 
-            List<UserResponse> response = users
-                .Select(user => UserMapper.UserToUserResponse(user))
-                .ToList();
+            return response;*/
 
-            return response;
+        }
 
-        }*/
 
     }
 }

@@ -1,6 +1,11 @@
 //using com.project.pagapoco.app.webapi.dto.Mapper;
-using com.project.pagapoco.core.business;
+using System.Text.Json;
+using com.project.pagapoco.app.webapi.Dto.Response;
+using com.project.pagapoco.core.business.Service;
 using com.project.pagapoco.core.data;
+using com.project.pagapoco.core.data.Repository;
+using com.project.pagapoco.core.exceptions;
+using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);

@@ -11,9 +11,9 @@ namespace com.project.pagapoco.app.webapi.Mapper
         {
             return new User(
                 userResponse.Id, 
-                userResponse.Nombre, 
-                userResponse.Apellido,
-                userResponse.Correo,
+                userResponse.FirstName, 
+                userResponse.LastName,
+                userResponse.Email,
                 ""
                 );
         }

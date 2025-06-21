@@ -2,8 +2,8 @@
 {
     public record UserResponse(
         int Id,
-        string Nombre, 
-        string Apellido, 
-        string Correo
+        string FirstName, 
+        string LastName, 
+        string Email
     );
 }
