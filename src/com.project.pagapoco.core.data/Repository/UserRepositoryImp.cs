@@ -19,10 +19,15 @@ namespace com.project.pagapoco.core.data.Repository
             _dbContext = dbContext;
         }
 
-        public async Task<User?> FindById(int id)
+        public async Task<User> FindByDni(long dni)
+        {
+            return await _dbContext.Users.FirstOrDefaultAsync(u => u.Dni == dni);
+        }
+
+        /*public async Task<User?> FindById(int id)
         {
             return await _dbContext.Users.FindAsync(id);
-        }
+        }*/
 
         public async Task<List<User>> getPaginationUser(int pageIndex, int pageSize)
         {

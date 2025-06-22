@@ -2,6 +2,7 @@
 {
     public record UserResponse(
         int Id,
+        long Dni,
         string FirstName, 
         string LastName, 
         string Email

@@ -48,8 +48,8 @@ namespace com.project.pagapoco.app.webapi.Controllers
 
         }
 
-        [HttpGet("{id}")]
-        public async Task<ActionResult<ApiResponse<UserResponse?>>> getUser(int id)
+        [HttpGet("{dni}")]
+        public async Task<ActionResult<ApiResponse<UserResponse?>>> getUser(long dni)
         {
 
             // Pregunta para Joselo
@@ -59,7 +59,7 @@ namespace com.project.pagapoco.app.webapi.Controllers
             try
             {
                 // User user
-                var user = await _userService.getUserById(id);
+                var user = await _userService.getUserByDni(dni);
 
                 return Ok(new ApiResponse<UserResponse?>(
                         "Success",

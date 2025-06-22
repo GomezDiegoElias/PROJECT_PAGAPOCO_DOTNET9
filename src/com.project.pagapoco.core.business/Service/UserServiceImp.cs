@@ -25,14 +25,14 @@ namespace com.project.pagapoco.core.business.Service
             return await _userRepository.getPaginationUser(pageIndex, pageSize);
         }
 
-        public async Task<User?> getUserById(int id)
+        public async Task<User?> getUserByDni(long dni)
         {
 
-            User? user = await _userRepository.FindById(id);
+            User? user = await _userRepository.FindByDni(dni);
 
             if (user == null)
             {
-                throw new NotFoundException($"User with ID '{id}' does not exist");
+                throw new NotFoundException($"User with DNI '{dni}' does not exist");
             }
 
             return user;

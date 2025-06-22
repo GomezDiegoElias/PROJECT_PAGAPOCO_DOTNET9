@@ -22,6 +22,7 @@ namespace com.project.pagapoco.app.webapi.Mapper
         {
             return new UserResponse(
                     user.Id,
+                    user.Dni,
                     user.FirstName,
                     user.LastName,
                     user.Email

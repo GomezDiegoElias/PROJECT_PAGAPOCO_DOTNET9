@@ -10,7 +10,7 @@ Accept: application/json
 
 ###
 
-GET {{base}}/api/users/5
+GET {{base}}/api/users/67890123
 Accept: application/json
 
 ###

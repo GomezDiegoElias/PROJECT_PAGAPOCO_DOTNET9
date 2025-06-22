@@ -7,7 +7,7 @@ namespace com.project.pagapoco.app.webapi.Controllers
     {
 
         Task<ActionResult<ApiResponse<List<UserResponse>>>> getAllUsers(int pageIndex, int pageSize);
-        Task<ActionResult<ApiResponse<UserResponse?>>> getUser(int id);
+        Task<ActionResult<ApiResponse<UserResponse?>>> getUser(long dni);
 
     }
 }

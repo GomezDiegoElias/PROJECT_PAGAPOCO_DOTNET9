@@ -10,7 +10,9 @@ namespace com.project.pagapoco.core.data.Repository
     public interface UserRepository
     {
 
-        public Task<User?> FindById(int id);
+        //public Task<User?> FindById(int id);
+
+        public Task<User> FindByDni(long dni);
         public Task<List<User>> getPaginationUser(int pageIndex, int pageSize);
 
     }
