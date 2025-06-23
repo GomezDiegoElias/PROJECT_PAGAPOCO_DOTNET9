@@ -43,5 +43,12 @@ namespace com.project.pagapoco.core.entities
             Password = password;
         }
 
+        public User(string firstName, string lastName, string email)
+        {
+            FirstName = firstName;
+            LastName = lastName;
+            Email = email;
+        }
+
     }
 }

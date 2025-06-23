@@ -2,6 +2,8 @@
 
 use bd_pagapoco_dotnet;
 
+select * from tbl_user;
+
 /*create table tbl_user(
 	id int identity(1,1),
 	dni bigint not null,

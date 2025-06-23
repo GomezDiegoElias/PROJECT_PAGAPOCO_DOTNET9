@@ -9,7 +9,8 @@ namespace com.project.pagapoco.app.webapi.Controllers
 
         Task<ActionResult<ApiResponse<List<UserResponse>>>> ListAllUsers(int pageIndex, int pageSize);
         Task<ActionResult<ApiResponse<UserResponse>>> SearchUser(long dni);
-        Task<ActionResult<ApiResponse<UserResponse>>> CreateUser(UserRequest userRequest);
+        Task<ActionResult<ApiResponse<UserResponse>>> CreateUser(UserCreatedRequest request);
+        Task<ActionResult<ApiResponse<UserResponse>>> EditUser(long dni, UserUpdatedRequest request);
 
     }
 }

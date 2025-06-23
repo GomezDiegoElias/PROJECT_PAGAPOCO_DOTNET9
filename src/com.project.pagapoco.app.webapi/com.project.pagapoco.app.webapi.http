@@ -5,12 +5,12 @@ Accept: application/json
 
 ###
 
-GET {{base}}/api/User?pageIndex=1&pageSize=5
+GET {{base}}/api/User?pageIndex=4&pageSize=10
 Accept: application/json
 
 ###
 
-GET {{base}}/api/User/12345678
+GET {{base}}/api/User/46924236
 Accept: application/json
 
 ###
@@ -19,16 +19,22 @@ POST {{base}}/api/User
 Content-Type: application/json
 
 {
-    "dni": 22998822,
-    "firstname": "Jose",
+    "dni": 46924236,
+    "firstname": "Diego",
     "lastname": "Gomez",
-    "email": "micorreojose@gmail.com",
-    "password": "123456"
+    "email": "taysonm895@gmail.com",
+    "password": "3624105"
 }
 
 ###
 
-#GET {{base}}/api/users/list
-#Accept: application/json
+PUT {{base}}/api/User/46924236
+Content-Type: application/json
+
+{
+    "firstname": "Diego Elias",
+    "lastname": "Gomez",
+    "email": "anikilogomez123@gmail.com"
+}
 
 ###

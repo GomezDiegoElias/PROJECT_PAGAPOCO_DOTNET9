@@ -36,5 +36,10 @@ namespace com.project.pagapoco.core.business.Service
             return _userRepository.Save(user);
         }
 
+        public async Task<User> UpdateUser(User user)
+        {
+            return await _userRepository.Update(user);
+        }
+
     }
 }

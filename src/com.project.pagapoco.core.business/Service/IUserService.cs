@@ -8,6 +8,7 @@ namespace com.project.pagapoco.core.business.Service
         Task<List<User>> GetAllUsers(int pageIndex, int pageSize);
         Task<User> GetUserByDni(long dni);
         Task<User> SaveUser(User user);
+        Task<User> UpdateUser(User user);
 
     }
 }
