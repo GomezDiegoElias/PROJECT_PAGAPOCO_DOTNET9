@@ -27,16 +27,13 @@ namespace com.project.pagapoco.core.business.Service
 
         public async Task<User> GetUserByDni(long dni)
         {
-
             User user = await _userRepository.FindByDni(dni);
-
-            //if (user == null)
-            //{
-            //    throw new NotFoundException($"User with DNI '{dni}' does not exist");
-            //}
-
             return user;
+        }
 
+        public Task<User> SaveUser(User user)
+        {
+            return _userRepository.Save(user);
         }
 
     }

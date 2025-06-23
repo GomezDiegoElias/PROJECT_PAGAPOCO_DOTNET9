@@ -19,14 +19,22 @@ namespace com.project.pagapoco.core.data.Repository
             _dbContext = dbContext;
         }
 
+        public async Task<List<User>> FindAll(int pageIndex, int pageSize)
+        {
+            return await _dbContext.getUserPagination(pageIndex, pageSize);
+        }
+
         public async Task<User> FindByDni(long dni)
         {
             return await _dbContext.Users.FirstOrDefaultAsync(u => u.Dni == dni);
         }
 
-        public async Task<List<User>> FindAll(int pageIndex, int pageSize)
+        
+        public async Task<User> Save(User user)
         {
-            return await _dbContext.getUserPagination(pageIndex, pageSize);
+            await _dbContext.AddAsync(user); // Agrega la entidad al contexto
+            await _dbContext.SaveChangesAsync(); // Guarda los cambios en la BD
+            return user;
         }
 
     }

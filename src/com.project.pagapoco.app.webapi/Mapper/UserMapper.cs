@@ -8,14 +8,14 @@ namespace com.project.pagapoco.app.webapi.Mapper
     public static class UserMapper
     {
 
-        public static User UserResponseToUser(UserResponse userResponse)
+        public static User UserRequestToUser(UserRequest userRequest)
         {
             return new User(
-                userResponse.Id, 
-                userResponse.FirstName, 
-                userResponse.LastName,
-                userResponse.Email,
-                ""
+                userRequest.Dni,
+                userRequest.FirstName,
+                userRequest.LastName,
+                userRequest.Email,
+                userRequest.Password
                 );
         }
 
@@ -25,7 +25,7 @@ namespace com.project.pagapoco.app.webapi.Mapper
                     user.Id,
                     user.Dni,
                     user.FirstName,
-                    user.LastName,
+                    user.LastName ?? string.Empty,
                     user.Email
                 );
         }

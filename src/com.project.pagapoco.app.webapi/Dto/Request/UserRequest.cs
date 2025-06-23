@@ -2,6 +2,7 @@
 {
     public record UserRequest
     (
+        long Dni,
         string FirstName,
         string LastName,
         string Email,

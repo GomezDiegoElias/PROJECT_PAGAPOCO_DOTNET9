@@ -1,6 +1,8 @@
-﻿using com.project.pagapoco.app.webapi.Dto.Response;
+﻿using com.project.pagapoco.app.webapi.Dto.Request;
+using com.project.pagapoco.app.webapi.Dto.Response;
 using com.project.pagapoco.app.webapi.Mapper;
 using com.project.pagapoco.core.business.Service;
+using com.project.pagapoco.core.entities;
 using com.project.pagapoco.core.exceptions;
 using Microsoft.AspNetCore.Mvc;
 
@@ -58,6 +60,20 @@ namespace com.project.pagapoco.app.webapi.Controllers
                     "Success",
                     "Users retrieved successfully",
                     UserMapper.UserToUserResponse(user)
+                ));
+
+        }
+
+        [HttpPost]
+        public async Task<ActionResult<ApiResponse<UserResponse>>> CreateUser([FromBody] UserRequest userRequest)
+        {
+            User user = UserMapper.UserRequestToUser(userRequest);
+            User userSaved = await _userService.SaveUser(user);
+
+            return StatusCode(StatusCodes.Status201Created, new ApiResponse<UserResponse>(
+                    "Success",
+                    "User created successfully",
+                    UserMapper.UserToUserResponse(userSaved)
                 ));
 
         }

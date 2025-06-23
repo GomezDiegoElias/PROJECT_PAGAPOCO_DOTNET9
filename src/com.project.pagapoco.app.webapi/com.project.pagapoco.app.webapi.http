@@ -15,6 +15,19 @@ Accept: application/json
 
 ###
 
+POST {{base}}/api/User
+Content-Type: application/json
+
+{
+    "dni": 22998822,
+    "firstname": "Jose",
+    "lastname": "Gomez",
+    "email": "micorreojose@gmail.com",
+    "password": "123456"
+}
+
+###
+
 #GET {{base}}/api/users/list
 #Accept: application/json
 
