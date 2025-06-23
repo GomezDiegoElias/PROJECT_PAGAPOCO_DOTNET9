@@ -1,6 +1,8 @@
-﻿using com.project.pagapoco.app.webapi.Dto.Response;
+﻿using com.project.pagapoco.app.webapi.Dto.Request;
+using com.project.pagapoco.app.webapi.Dto.Response;
 using com.project.pagapoco.app.webapi.Mapper;
 using com.project.pagapoco.core.business.Service;
+using com.project.pagapoco.core.entities;
 using com.project.pagapoco.core.exceptions;
 using Microsoft.AspNetCore.Mvc;
 
@@ -49,7 +51,7 @@ namespace com.project.pagapoco.app.webapi.Controllers
 
             if (user == null)
                 return NotFound(new ApiResponse<string>(
-                        "Error",
+                        "Error: Something went wrong",
                         $"User with DNI '{dni}' does not exist",
                         null
                     ));
@@ -58,6 +60,47 @@ namespace com.project.pagapoco.app.webapi.Controllers
                     "Success",
                     "Users retrieved successfully",
                     UserMapper.UserToUserResponse(user)
+                ));
+
+        }
+
+        [HttpPost]
+        public async Task<ActionResult<ApiResponse<UserResponse>>> CreateUser([FromBody] UserCreatedRequest request)
+        {
+            User user = UserMapper.UserCreatedRequestToUser(request);
+            User userSaved = await _userService.SaveUser(user);
+
+            return StatusCode(StatusCodes.Status201Created, new ApiResponse<UserResponse>(
+                    "Success",
+                    "User created successfully",
+                    UserMapper.UserToUserResponse(userSaved)
+                ));
+
+        }
+
+        [HttpPut("{dni}")]
+        public async Task<ActionResult<ApiResponse<UserResponse>>> EditUser(long dni, [FromBody] UserUpdatedRequest request)
+        {
+
+            User userExisting = await _userService.GetUserByDni(dni);
+
+            if (userExisting == null)
+                return NotFound(new ApiResponse<string>(
+                        "Error: Something went wrong",
+                        $"User with DNI {dni} does not exist",
+                        null
+                    ));
+
+            User user = UserMapper.UserUpdatedRequestToUser(request);
+
+            user.Dni = userExisting.Dni;
+
+            User userUpdate = await _userService.UpdateUser(user);
+
+            return Ok(new ApiResponse<UserResponse>(
+                    "Success",
+                    "User updated successfully",
+                    UserMapper.UserToUserResponse(userUpdate)
                 ));
 
         }

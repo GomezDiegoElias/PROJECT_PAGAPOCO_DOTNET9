@@ -34,13 +34,20 @@ namespace com.project.pagapoco.core.entities
         public string Password { get; set; } = string.Empty;
 
         public User() { }
-        public User(int id, string firstName, string lastName, string email, string password)
+        public User(long dni, string firstName, string lastName, string email, string password)
         {
-            Id = id;
+            Dni = dni;
             FirstName = firstName;
             LastName = lastName;
             Email = email;
             Password = password;
+        }
+
+        public User(string firstName, string lastName, string email)
+        {
+            FirstName = firstName;
+            LastName = lastName;
+            Email = email;
         }
 
     }

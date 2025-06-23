@@ -5,10 +5,10 @@ namespace com.project.pagapoco.core.business.Service
     public interface IUserService
     {
 
-        //Task<User?> getUserById(int id);
-
-        Task<User> GetUserByDni(long dni);
         Task<List<User>> GetAllUsers(int pageIndex, int pageSize);
+        Task<User> GetUserByDni(long dni);
+        Task<User> SaveUser(User user);
+        Task<User> UpdateUser(User user);
 
     }
 }

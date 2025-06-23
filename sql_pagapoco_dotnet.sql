@@ -2,6 +2,8 @@
 
 use bd_pagapoco_dotnet;
 
+select * from tbl_user;
+
 /*create table tbl_user(
 	id int identity(1,1),
 	dni bigint not null,
@@ -46,36 +48,6 @@ use bd_pagapoco_dotnet;
         (29123456, 'Lautaro', 'Guerrero', 'lautaro.guerrero@email.com', 'lauta7'),
         (30234567, 'Milagros', 'Campos', 'milagros.campos@email.com', 'mila89');*/
 
-select * from tbl_user;
-
--- PROCEDIMIENTO ALMACENADO PARA PAGINACION
-
-/*CREATE PROCEDURE sp_GetUsersPaginated
-    @PageIndex INT = 1,
-    @PageSize INT = 10
-AS
-BEGIN
-    DECLARE @Offset INT = (@PageSize * (@PageIndex - 1));
-
-    SELECT
-        u.id,
-		u.dni,
-        u.first_name,
-        u.last_name,
-        u.email,
-        fila = ROW_NUMBER() OVER(ORDER BY u.id ASC),
-        totalFilas = COUNT(*) OVER()
-    FROM tbl_user u
-    ORDER BY u.id
-    OFFSET @Offset ROWS 
-    FETCH NEXT @PageSize ROWS ONLY;
-END*/
-GO
-
--- Ejecutar el procedimiento
-EXEC sp_GetUsersPaginated @PageIndex = 3, @PageSize = 10;
-
-select * from tbl_user;
 
 DECLARE @PageIndex INT = 1,
   @PageSize INT = 10,
