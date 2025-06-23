@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Diagnostics.CodeAnalysis;
+using System.Numerics;
 
 namespace com.project.pagapoco.core.entities
 {
@@ -11,6 +12,11 @@ namespace com.project.pagapoco.core.entities
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
+
+        [Required]
+        [StringLength(20)]
+        [Column("dni")]
+        public long Dni { get; set; }
 
         [Required]
         [Column("first_name", TypeName = "varchar(50)")]

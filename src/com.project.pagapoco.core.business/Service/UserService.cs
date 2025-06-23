@@ -1,12 +1,43 @@
-﻿using com.project.pagapoco.core.entities;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using com.project.pagapoco.core.data.Repository;
+using com.project.pagapoco.core.entities;
+using com.project.pagapoco.core.exceptions;
 
 namespace com.project.pagapoco.core.business.Service
 {
-    public interface UserService
+    public class UserService : IUserService
     {
 
-        Task<User?> getUserById(int id);
-        Task<List<User>> getAllUserPagination(int pageIndex, int pageSize);
+        // Inyección de dependencias del repositorio de usuarios
+        private readonly IUserRepository _userRepository;
+
+        public UserService(IUserRepository userRepository)
+        {
+            _userRepository = userRepository;
+        }
+
+        public async Task<List<User>> GetAllUsers(int pageIndex, int pageSize)
+        {
+            return await _userRepository.FindAll(pageIndex, pageSize);
+        }
+
+        public async Task<User> GetUserByDni(long dni)
+        {
+
+            User user = await _userRepository.FindByDni(dni);
+
+            //if (user == null)
+            //{
+            //    throw new NotFoundException($"User with DNI '{dni}' does not exist");
+            //}
+
+            return user;
+
+        }
 
     }
 }

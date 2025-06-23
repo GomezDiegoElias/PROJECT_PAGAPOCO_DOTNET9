@@ -24,5 +24,18 @@ namespace com.project.pagapoco.core.data
                 .ToListAsync();
         }
 
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            
+            modelBuilder.Entity<User>()
+                .HasIndex(u => u.Email)
+                .IsUnique();
+
+            modelBuilder.Entity<User>()
+                .HasIndex(u => u.Dni)
+                .IsUnique();
+
+        }
+
     }
 }

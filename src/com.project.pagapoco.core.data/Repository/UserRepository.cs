@@ -4,14 +4,30 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using com.project.pagapoco.core.entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace com.project.pagapoco.core.data.Repository
 {
-    public interface UserRepository
+    public class UserRepository : IUserRepository
     {
 
-        public Task<User?> FindById(int id);
-        public Task<List<User>> getPaginationUser(int pageIndex, int pageSize);
+        // Injección de dependencias del contexto de la base de datos
+        private readonly AppDbContext _dbContext;
+
+        public UserRepository(AppDbContext dbContext)
+        {
+            _dbContext = dbContext;
+        }
+
+        public async Task<User> FindByDni(long dni)
+        {
+            return await _dbContext.Users.FirstOrDefaultAsync(u => u.Dni == dni);
+        }
+
+        public async Task<List<User>> FindAll(int pageIndex, int pageSize)
+        {
+            return await _dbContext.getUserPagination(pageIndex, pageSize);
+        }
 
     }
 }

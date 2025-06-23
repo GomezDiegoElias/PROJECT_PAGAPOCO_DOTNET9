@@ -1,16 +1,16 @@
 @base = http://localhost:5208
 
-GET {{base}}/api/users
+GET {{base}}/api/User
 Accept: application/json
 
 ###
 
-GET {{base}}/api/users?pageIndex=1&pageSize=5
+GET {{base}}/api/User?pageIndex=1&pageSize=5
 Accept: application/json
 
 ###
 
-GET {{base}}/api/users/5
+GET {{base}}/api/User/12345678
 Accept: application/json
 
 ###
