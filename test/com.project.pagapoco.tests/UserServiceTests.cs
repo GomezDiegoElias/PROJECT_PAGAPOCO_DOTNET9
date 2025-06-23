@@ -11,15 +11,15 @@ namespace com.project.pagapoco.tests
 
         // Uso de Moq para crear un mock del repositorio de usuarios
         // Se hace uso de la interfaz UserRepository no de la implementación concreta
-        private readonly Mock<UserRepository> _mockUserRepository;
+        private readonly Mock<IUserRepository> _mockUserRepository;
 
         // Instancia del servicio de usuario
-        private readonly UserService _userService;
+        private readonly IUserService _userService;
 
         public UserServiceTests()
         {
-            _mockUserRepository = new Mock<UserRepository>(MockBehavior.Strict);
-            _userService = new UserServiceImp(_mockUserRepository.Object);
+            _mockUserRepository = new Mock<IUserRepository>(MockBehavior.Strict);
+            _userService = new UserService(_mockUserRepository.Object);
         }
 
         [Fact]

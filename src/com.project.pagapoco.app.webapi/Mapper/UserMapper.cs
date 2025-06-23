@@ -4,6 +4,7 @@ using com.project.pagapoco.core.entities;
 
 namespace com.project.pagapoco.app.webapi.Mapper
 {
+    // Al hacerlo estatico no hace falta hacer la inyeccion de dependencia
     public static class UserMapper
     {
 
