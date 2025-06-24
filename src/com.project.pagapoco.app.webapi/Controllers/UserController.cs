@@ -105,5 +105,28 @@ namespace com.project.pagapoco.app.webapi.Controllers
 
         }
 
+        [HttpDelete("{dni}")]
+        public async Task<ActionResult<ApiResponse<object>>> RemoveUser(long dni)
+        {
+
+            User user = await _userService.GetUserByDni(dni);
+
+            if (user == null)
+                return NotFound(new ApiResponse<object>(
+                        "Error: Something went wrong",
+                        $"User with DNI {dni} does not exist",
+                        null
+                    ));
+
+            await _userService.DeleteUser(dni);
+
+            return Ok(new ApiResponse<object>(
+                    "Success",
+                    "User deleted successfully",
+                    null
+                ));
+
+        }
+
     }
 }

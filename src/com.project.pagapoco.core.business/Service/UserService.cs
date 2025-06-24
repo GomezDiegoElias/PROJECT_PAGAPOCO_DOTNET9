@@ -41,5 +41,10 @@ namespace com.project.pagapoco.core.business.Service
             return await _userRepository.Update(user);
         }
 
+        public async Task<bool> DeleteUser(long dni)
+        {
+            return await _userRepository.DeleteByDni(dni);
+        }
+
     }
 }

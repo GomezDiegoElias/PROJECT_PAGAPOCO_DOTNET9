@@ -38,3 +38,8 @@ Content-Type: application/json
 }
 
 ###
+
+DELETE {{base}}/api/User/456789015
+Accept: application/json
+
+###

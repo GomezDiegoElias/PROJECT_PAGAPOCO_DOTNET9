@@ -30,7 +30,7 @@ namespace com.project.pagapoco.core.data.Repository
             return await _dbContext.Users.FirstOrDefaultAsync(u => u.Dni == dni);
         }
 
-        
+
         public async Task<User> Save(User user)
         {
             await _dbContext.AddAsync(user); // Agrega la entidad al contexto
@@ -56,6 +56,20 @@ namespace com.project.pagapoco.core.data.Repository
             await _dbContext.SaveChangesAsync();
 
             return userUpdate;
+
+        }
+
+        public async Task<bool> DeleteByDni(long dni)
+        {
+
+            var user = await this.FindByDni(dni);
+
+            if (user == null) return false;
+                
+            _dbContext.Remove(user);
+            await _dbContext.SaveChangesAsync();
+
+            return true;
 
         }
 
