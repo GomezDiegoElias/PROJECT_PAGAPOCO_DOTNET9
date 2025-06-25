@@ -1,7 +1,11 @@
+using System.Text;
 using com.project.pagapoco.core.business.Service;
 using com.project.pagapoco.core.data;
+using com.project.pagapoco.core.config;
 using com.project.pagapoco.core.data.Repository;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -24,6 +28,39 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IUserService, UserService>();
 //builder.Services.AddScoped<UserMapper>();
+builder.Services.AddScoped<IAuthService, AuthService>();
+
+// Configuración JWT
+var jwtConfig = builder.Configuration.GetSection("Jwt").Get<JwtConfig>();
+builder.Services.AddSingleton(jwtConfig);
+
+// Autenticación JWT
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+}).AddJwtBearer(options =>
+{
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuer = true,
+        ValidateAudience = true,
+        ValidateLifetime = true,
+        ValidateIssuerSigningKey = true,
+        ValidIssuer = jwtConfig.Issuer,
+        ValidAudience = jwtConfig.Audience,
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtConfig.Secret))
+    };
+});
+
+// cors
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("NewPolicy", app =>
+    {
+        app.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod();
+    });
+});
 
 var app = builder.Build();
 
@@ -41,6 +78,8 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseCors("NewPolicy");
+app.UseAuthentication(); // jwt
 app.UseAuthorization();
 
 app.MapControllers();

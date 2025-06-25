@@ -14,8 +14,8 @@ namespace com.project.pagapoco.core.data.Repository
         public Task<User> FindByDni(long dni);
         public Task<User> Save(User user);
         public Task<User> Update(User user);
-
         public Task<bool> DeleteByDni(long dni);
+        public Task<User> FindByEmailAsync(string email);
 
     }
 }

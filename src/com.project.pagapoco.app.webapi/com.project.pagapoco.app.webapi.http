@@ -10,7 +10,7 @@ Accept: application/json
 
 ###
 
-GET {{base}}/api/User/46924236
+GET {{base}}/api/User/469242365
 Accept: application/json
 
 ###
@@ -41,5 +41,15 @@ Content-Type: application/json
 
 DELETE {{base}}/api/User/456789015
 Accept: application/json
+
+###
+
+POST {{base}}/api/Auth/login
+Content-Type: application/json
+
+{
+    "Email": "pedro.rodriguez@email.com",
+    "Password": "pedro1"
+}
 
 ###
