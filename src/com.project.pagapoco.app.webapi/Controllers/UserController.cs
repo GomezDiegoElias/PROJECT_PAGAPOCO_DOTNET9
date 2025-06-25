@@ -36,7 +36,8 @@ namespace com.project.pagapoco.app.webapi.Controllers
                 .ToList();
 
             return Ok(new ApiResponse<List<UserResponse>>(
-                    "Success",
+                    //"Success",
+                    true,
                     "Users retrieved successfully",
                     usersDtos
                 ));
@@ -51,13 +52,15 @@ namespace com.project.pagapoco.app.webapi.Controllers
 
             if (user == null)
                 return NotFound(new ApiResponse<string>(
-                        "Error: Something went wrong",
-                        $"User with DNI '{dni}' does not exist",
+                        //"Error: Something went wrong",
+                        false,
+                        $"Error: User with DNI '{dni}' does not exist",
                         null
                     ));
 
             return Ok(new ApiResponse<UserResponse?>(
-                    "Success",
+                    //"Success",
+                    true,
                     "Users retrieved successfully",
                     UserMapper.UserToUserResponse(user)
                 ));
@@ -71,7 +74,8 @@ namespace com.project.pagapoco.app.webapi.Controllers
             User userSaved = await _userService.SaveUser(user);
 
             return StatusCode(StatusCodes.Status201Created, new ApiResponse<UserResponse>(
-                    "Success",
+                    //"Success",
+                    true,
                     "User created successfully",
                     UserMapper.UserToUserResponse(userSaved)
                 ));
@@ -86,8 +90,9 @@ namespace com.project.pagapoco.app.webapi.Controllers
 
             if (userExisting == null)
                 return NotFound(new ApiResponse<string>(
-                        "Error: Something went wrong",
-                        $"User with DNI {dni} does not exist",
+                        //"Error: Something went wrong",
+                        false,
+                        $"Error: User with DNI {dni} does not exist",
                         null
                     ));
 
@@ -98,9 +103,35 @@ namespace com.project.pagapoco.app.webapi.Controllers
             User userUpdate = await _userService.UpdateUser(user);
 
             return Ok(new ApiResponse<UserResponse>(
-                    "Success",
+                    //"Success",
+                    true,
                     "User updated successfully",
                     UserMapper.UserToUserResponse(userUpdate)
+                ));
+
+        }
+
+        [HttpDelete("{dni}")]
+        public async Task<ActionResult<ApiResponse<object>>> RemoveUser(long dni)
+        {
+
+            User user = await _userService.GetUserByDni(dni);
+
+            if (user == null)
+                return NotFound(new ApiResponse<object>(
+                        //"Error: Something went wrong",
+                        false,
+                        $"Error: User with DNI {dni} does not exist",
+                        null
+                    ));
+
+            await _userService.DeleteUser(dni);
+
+            return Ok(new ApiResponse<object>(
+                    //"Success",
+                    true,
+                    "User deleted successfully",
+                    null
                 ));
 
         }
