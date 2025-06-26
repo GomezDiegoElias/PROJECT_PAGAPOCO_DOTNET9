@@ -1,10 +1,12 @@
 ﻿using com.project.pagapoco.app.webapi.Dto.Request;
 using com.project.pagapoco.core.business.Service;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace com.project.pagapoco.app.webapi.Controllers
 {
 
+    [AllowAnonymous]
     [ApiController]
     [Route("api/[controller]")]
     public class AuthController : Controller

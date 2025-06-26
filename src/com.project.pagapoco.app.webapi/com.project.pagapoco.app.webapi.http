@@ -7,6 +7,7 @@ Accept: application/json
 
 GET {{base}}/api/User?pageIndex=4&pageSize=10
 Accept: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiIyIiwiZW1haWwiOiJtaWNvcnJlb2p1bmlvckBnbWFpbC5jb20iLCJGdWxsTmFtZSI6Ikp1bmlvciBHb21leiIsIm5iZiI6MTc1MDk0NzE5MSwiZXhwIjoxNzUwOTUwNzkxLCJpYXQiOjE3NTA5NDcxOTEsImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3Q6NTIwOCIsImF1ZCI6Imh0dHA6Ly9sb2NhbGhvc3Q6NTIwOCJ9.mTml7XTqtKXWFtjwro0IJCZOYZsrp7tvGL_4aG4OFkk
 
 ###
 
@@ -48,8 +49,8 @@ POST {{base}}/api/Auth/login
 Content-Type: application/json
 
 {
-    "Email": "pedro.rodriguez@email.com",
-    "Password": "pedro1"
+    "Email": "micorreojunior@gmail.com",
+    "Password": "123456"
 }
 
 ###
