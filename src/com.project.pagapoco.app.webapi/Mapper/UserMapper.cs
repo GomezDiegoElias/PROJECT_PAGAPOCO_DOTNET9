@@ -39,5 +39,16 @@ namespace com.project.pagapoco.app.webapi.Mapper
                 );
         }
 
+        //public static User RegisterRequestToUser(RegisterRequest request)
+        //{
+        //    return new User(
+        //            request.Dni,
+        //            request.FirstName,
+        //            request.LastName,
+        //            request.Email,
+        //            request.Password
+        //        );
+        //}
+
     }
 }

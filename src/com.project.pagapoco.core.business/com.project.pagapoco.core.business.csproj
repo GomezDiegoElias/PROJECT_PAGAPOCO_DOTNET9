@@ -7,6 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="BCrypt.Net-Next" Version="4.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\com.project.pagapoco.core.config\com.project.pagapoco.core.config.csproj" />
     <ProjectReference Include="..\com.project.pagapoco.core.data\com.project.pagapoco.core.data.csproj" />
     <ProjectReference Include="..\com.project.pagapoco.core.entities\com.project.pagapoco.core.entities.csproj" />

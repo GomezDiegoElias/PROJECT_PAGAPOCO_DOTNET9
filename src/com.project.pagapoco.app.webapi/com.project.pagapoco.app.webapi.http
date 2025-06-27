@@ -54,3 +54,24 @@ Content-Type: application/json
 }
 
 ###
+
+POST {{base}}/api/Auth/register
+Content-Type: application/json
+
+{
+    "dni": 44745058,
+    "firstname": "Sebastian Esteban",
+    "lastname": "Gomez",
+    "email": "micorreosebastian@gmail.com",
+    "password": "123456"
+}
+
+###
+
+POST {{base}}/api/Auth/login
+Content-Type: application/json
+
+{
+    "email": "micorreodiego@gmail.com",
+    "password": "123456"
+}
