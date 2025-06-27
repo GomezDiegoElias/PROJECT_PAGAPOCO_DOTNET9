@@ -72,7 +72,7 @@ namespace com.project.pagapoco.core.data.Repository
             return true;
 
         }
-        public async Task<User> FindByEmailAsync(string email)
+        public async Task<User> FindByEmail(string email)
         {
             return await _dbContext.Users.FirstOrDefaultAsync(u => u.Email == email);
         }

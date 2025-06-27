@@ -4,11 +4,13 @@ using com.project.pagapoco.app.webapi.Mapper;
 using com.project.pagapoco.core.business.Service;
 using com.project.pagapoco.core.entities;
 using com.project.pagapoco.core.exceptions;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace com.project.pagapoco.app.webapi.Controllers
 {
 
+    [Authorize]
     [ApiController]
     [Route("/api/[controller]")]
     public class UserController : Controller, IUserController

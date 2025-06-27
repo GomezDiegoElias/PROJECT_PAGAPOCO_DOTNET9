@@ -8,6 +8,8 @@ using System.Threading.Tasks;
 using com.project.pagapoco.core.config;
 using com.project.pagapoco.core.data.Repository;
 using com.project.pagapoco.core.entities;
+using com.project.pagapoco.core.entities.Dto.Request;
+using com.project.pagapoco.core.entities.Dto.Response;
 using Microsoft.IdentityModel.Tokens;
 
 namespace com.project.pagapoco.core.business.Service
@@ -23,15 +25,29 @@ namespace com.project.pagapoco.core.business.Service
             _jwtConfig = jwtConfig;
         }
 
-        public async Task<AuthResponse> Authenticate(string email, string password)
+        public async Task<AuthResponse> Login(LoginRequest request)
         {
-            // 1. Validar usuario por email
-            var user = await _userRepository.FindByEmailAsync(email);
 
-            if (user == null || !VerifyPassword(password, user.Password))
+            Console.WriteLine($"Intento de login con email: {request.Email}");
+
+            var user = await _userRepository.FindByEmail(request.Email);
+
+            if (user == null)
+            {
+                Console.WriteLine("Usuario no encontrado");
+                throw new UnauthorizedAccessException("Email o contraseña incorrectos");
+            }
+
+            Console.WriteLine($"Usuario encontrado: {user.Email}");
+            Console.WriteLine($"Contraseña proporcionada: {request.Password}");
+            Console.WriteLine($"Hash almacenado: {user.Password}");
+
+            bool passwordValid = VerifyPassword(request.Password, user.Password);
+            Console.WriteLine($"Contraseña válida: {passwordValid}");
+
+            if (!passwordValid)
                 throw new UnauthorizedAccessException("Email o contraseña incorrectos");
 
-            // 2. Generar token
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(_jwtConfig.Secret);
 
@@ -42,7 +58,7 @@ namespace com.project.pagapoco.core.business.Service
                 new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
                 new Claim(ClaimTypes.Email, user.Email),
                 new Claim("FullName", $"{user.FirstName} {user.LastName}"),
-                // Agrega más claims según necesites
+                // Mas claimas
             }),
                 Expires = DateTime.UtcNow.AddMinutes(_jwtConfig.ExpirationMinutes),
                 Issuer = _jwtConfig.Issuer,
@@ -60,11 +76,39 @@ namespace com.project.pagapoco.core.business.Service
             };
         }
 
+        public async Task<AuthResponse> Register(RegisterRequest request)
+        {
+
+            if (await _userRepository.FindByEmail(request.Email) != null)
+                throw new ApplicationException("Email ya registrado");
+
+            if (await _userRepository.FindByDni(request.Dni) != null)
+                throw new ApplicationException("DNI ya registrado");
+
+            var newUser = new User
+            {
+                Dni = request.Dni,
+                FirstName = request.FirstName,
+                LastName = request.LastName,
+                Email = request.Email,
+                Password = BCrypt.Net.BCrypt.HashPassword(request.Password),
+            };
+
+            var createdUser = await _userRepository.Save(newUser);
+
+            var login  = new LoginRequest
+            {
+                Email = request.Email,
+                Password = request.Password
+            };
+
+            return await Login(login);
+
+        }
+
         private bool VerifyPassword(string password, string storedHash)
         {
-            // Implementa la verificación de contraseña (usa BCrypt o similar)
-            // Esto es solo un ejemplo básico - NO usar en producción
-            return password == storedHash;
+            return BCrypt.Net.BCrypt.Verify(password, storedHash);
         }
 
     }

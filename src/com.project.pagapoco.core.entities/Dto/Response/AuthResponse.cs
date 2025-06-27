@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace com.project.pagapoco.core.entities
+namespace com.project.pagapoco.core.entities.Dto.Response
 {
     public class AuthResponse
     {
