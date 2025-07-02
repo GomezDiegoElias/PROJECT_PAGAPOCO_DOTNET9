@@ -1,4 +1,13 @@
+using com.project.pagapoco.app.webmvc.Services;
+using System.Net.Http.Headers;
+
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddHttpClient<IUserService, UserService>(client =>
+{
+    client.BaseAddress = new Uri("http://localhost:5208/");
+    client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+});
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();

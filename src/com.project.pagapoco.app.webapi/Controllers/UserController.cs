@@ -11,6 +11,7 @@ namespace com.project.pagapoco.app.webapi.Controllers
 {
 
     [Authorize]
+    //[AllowAnonymous]
     [ApiController]
     [Route("/api/[controller]")]
     public class UserController : Controller, IUserController
@@ -24,6 +25,7 @@ namespace com.project.pagapoco.app.webapi.Controllers
             _userService = userController;
         }
 
+        [AllowAnonymous]
         [HttpGet]
         public async Task<ActionResult<ApiResponse<List<UserResponse>>>> ListAllUsers(
             [FromQuery] int pageIndex = 1,
