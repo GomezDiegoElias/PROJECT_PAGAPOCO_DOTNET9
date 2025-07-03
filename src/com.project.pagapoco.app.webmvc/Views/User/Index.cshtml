@@ -1,0 +1,16 @@
+﻿@using com.project.pagapoco.app.webapi.Dto.Response
+@model List<UserResponse>
+
+<div>
+
+	<div>
+		<h1>Usuarios</h1>
+		<ul>
+			@foreach(var user in Model)
+			{
+				<li>@user.Dni, @user.FirstName</li>
+			}
+		</ul>
+	</div>
+
+</div>
