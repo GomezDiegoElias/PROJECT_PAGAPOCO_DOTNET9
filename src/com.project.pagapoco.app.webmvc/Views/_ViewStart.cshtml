@@ -1,3 +1,11 @@
 ﻿@{
-    Layout = "_Layout";
+    // Solo usa el layout si no es una página de Account (login/register)
+    if (!Context.Request.Path.StartsWithSegments("/Account"))
+    {
+        Layout = "_Layout";
+    }
+    else
+    {
+        Layout = null;
+    }
 }

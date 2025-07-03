@@ -1,9 +1,11 @@
 using System.Diagnostics;
 using com.project.pagapoco.app.webmvc.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace com.project.pagapoco.app.webmvc.Controllers
 {
+    [Authorize]
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
