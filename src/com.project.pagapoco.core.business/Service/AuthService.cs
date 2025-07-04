@@ -106,6 +106,12 @@ namespace com.project.pagapoco.core.business.Service
 
         }
 
+        public async Task<bool> Logout()
+        {
+            Console.WriteLine($"Logout realizado en: {DateTime.UtcNow}");
+            return await Task.FromResult(true);
+        }
+
         private bool VerifyPassword(string password, string storedHash)
         {
             return BCrypt.Net.BCrypt.Verify(password, storedHash);

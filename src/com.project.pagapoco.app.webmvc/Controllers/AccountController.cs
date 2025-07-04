@@ -78,27 +78,44 @@ namespace com.project.pagapoco.app.webmvc.Controllers
 
         // POST: Account/Register
         [HttpPost]
-        public async Task<IActionResult> Register(string email, string password, string confirmPassword)
+        public async Task<IActionResult> Register(long dni, string firstname, string lastname, string email, string password)
         {
-            // Validación
-            if (password != confirmPassword)
+            
+            try
             {
-                ViewBag.Error = "Las contraseñas no coinciden";
+
+                if (string.IsNullOrEmpty(email) && string.IsNullOrEmpty(password))
+                {
+                    ViewBag.Error = "Por favor complete todos los campos";
+                    return View();
+
+                }
+
+                var registerRequest = new RegisterRequest
+                {
+                    Dni = dni,
+                    FirstName = firstname,
+                    LastName = lastname,
+                    Email = email,
+                    Password = password
+                };
+
+                var authResponse = await _authService.Register(registerRequest);
+
+                return RedirectToAction("Login");
+
+            } catch(Exception ex)
+            {
+                ViewBag.Error = ex.Message;
                 return View();
             }
 
-            if (!string.IsNullOrEmpty(email) && !string.IsNullOrEmpty(password))
-            {
-                return RedirectToAction("Login");
-            }
-
-            ViewBag.Error = "Por favor complete todos los campos";
-            return View();
         }
 
         // GET: Account/Logout
         public IActionResult Logout()
         {
+            // Eliminar la cookie de autenticación
             return RedirectToAction("Login");
         }
 

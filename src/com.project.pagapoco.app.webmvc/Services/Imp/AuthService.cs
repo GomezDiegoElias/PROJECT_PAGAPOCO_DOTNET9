@@ -38,9 +38,27 @@ namespace com.project.pagapoco.app.webmvc.Services.Imp
 
         }
 
-        public Task<AuthResponse> Register(RegisterRequest request)
+        public async Task<AuthResponse> Register(RegisterRequest request)
         {
-            throw new NotImplementedException();
+
+            try
+            {
+
+                var response = await _httpClient.PostAsJsonAsync("/api/Auth/register", request);
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    var errorContent = await response.Content.ReadAsStringAsync();
+                    throw new ApplicationException($"Error al registrar: {errorContent}");
+                }
+
+                return await response.Content.ReadFromJsonAsync<AuthResponse>();
+
+            } catch(Exception ex)
+            {
+                throw new ApplicationException("Error al registrar", ex);
+            }
+        
         }
     }
 }

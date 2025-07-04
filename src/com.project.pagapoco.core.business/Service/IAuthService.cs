@@ -13,5 +13,6 @@ namespace com.project.pagapoco.core.business.Service
     {
         public Task<AuthResponse> Login(LoginRequest request);
         public Task<AuthResponse> Register(RegisterRequest request);
+        public Task<bool> Logout();
     }
 }

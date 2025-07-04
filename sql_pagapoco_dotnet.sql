@@ -17,7 +17,7 @@ select * from tbl_user;
 );*/
 
 
-/*INSERT INTO dbo.tbl_user (dni, first_name, last_name, email, [password])
+INSERT INTO dbo.tbl_user (dni, first_name, last_name, email, [password])
     VALUES 
         (12345678, 'Juan', 'Pérez', 'juan.perez@email.com', '123456'),
         (23456789, 'María', 'González', 'maria.gonzalez@email.com', 'abc123'),
@@ -48,7 +48,7 @@ select * from tbl_user;
         (27901234, 'Thiago', 'Moreno', 'thiago.moreno@email.com', 'thia34'),
         (28012345, 'Amparo', 'Blanco', 'amparo.blanco@email.com', 'ampa56'),
         (29123456, 'Lautaro', 'Guerrero', 'lautaro.guerrero@email.com', 'lauta7'),
-        (30234567, 'Milagros', 'Campos', 'milagros.campos@email.com', 'mila89');*/
+        (30234567, 'Milagros', 'Campos', 'milagros.campos@email.com', 'mila89');
 
 
 DECLARE @PageIndex INT = 1,
