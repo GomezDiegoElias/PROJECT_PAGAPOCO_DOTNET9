@@ -6,6 +6,8 @@ using com.project.pagapoco.core.data.Repository;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using com.project.pagapoco.core.business.Service.Imp;
+using com.project.pagapoco.core.data.Repository.Imp;
 
 var builder = WebApplication.CreateBuilder(args);
 

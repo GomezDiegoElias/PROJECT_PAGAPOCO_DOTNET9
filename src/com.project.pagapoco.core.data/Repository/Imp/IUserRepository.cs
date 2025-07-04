@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using com.project.pagapoco.core.entities;
 using com.project.pagapoco.core.entities.Dto.Response;
 
-namespace com.project.pagapoco.core.data.Repository
+namespace com.project.pagapoco.core.data.Repository.Imp
 {
     public interface IUserRepository
     {
