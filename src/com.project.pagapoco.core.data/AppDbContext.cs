@@ -1,4 +1,7 @@
-﻿using com.project.pagapoco.core.entities;
+﻿using System.Data;
+using com.project.pagapoco.core.entities;
+using com.project.pagapoco.core.entities.Dto;
+using com.project.pagapoco.core.entities.Dto.Response;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 
@@ -10,18 +13,45 @@ namespace com.project.pagapoco.core.data
 
         public DbSet<User> Users { get; set; }
 
-        public async Task<List<User>> getUserPagination(int pageIndex, int pageSize)
+        public async Task<PaginatedResponse<User>> getUserPagination(int pageIndex, int pageSize)
         {
-            var parameters = new[]
-            {
-                    new SqlParameter("@Param1", pageIndex),
-                    new SqlParameter("@Param2", pageSize)
-                };
+            var users = new List<User>();
+            var totalCount = 0;
 
-            return await Users
-                .FromSqlRaw("EXEC getUserPagination @Param1, @Param2", parameters)
-                .AsNoTracking()
-                .ToListAsync();
+            using var connection = new SqlConnection(Database.GetConnectionString());
+            await connection.OpenAsync();
+
+            using var command = new SqlCommand("getUserPagination", connection);
+            command.CommandType = CommandType.StoredProcedure;
+            command.Parameters.AddWithValue("@PageIndex", pageIndex);
+            command.Parameters.AddWithValue("@PageSize", pageSize);
+
+            using var reader = await command.ExecuteReaderAsync();
+
+            while (await reader.ReadAsync())
+            {
+                users.Add(new User
+                {
+                    Id = reader.GetInt32("Id"),
+                    Dni = reader.GetInt64("Dni"),
+                    FirstName = reader.GetString("FirstName"),
+                    LastName = reader.IsDBNull("LastName") ? null : reader.GetString("LastName"),
+                    Email = reader.GetString("Email"),
+                    Password = reader.GetString("Password")
+                });
+
+                // Obtener el total solo una vez
+                if (totalCount == 0)
+                {
+                    totalCount = reader.GetInt32("TotalFilas");
+                }
+            }
+
+            return new PaginatedResponse<User>
+            {
+                Items = users,
+                TotalCount = totalCount
+            };
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -34,6 +64,10 @@ namespace com.project.pagapoco.core.data
             modelBuilder.Entity<User>()
                 .HasIndex(u => u.Dni)
                 .IsUnique();
+
+            modelBuilder.Entity<UserPaginationResult>()
+                .HasNoKey()
+                .ToView(null);
 
         }
 

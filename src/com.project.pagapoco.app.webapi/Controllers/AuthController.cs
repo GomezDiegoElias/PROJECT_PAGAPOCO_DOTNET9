@@ -30,7 +30,7 @@ namespace com.project.pagapoco.app.webapi.Controllers
             }
             catch (UnauthorizedAccessException)
             {
-                return Unauthorized(new { message = "Email o contraseña incorrectos" });
+                return Unauthorized(new { message = "Credenciales incorrectas" });
             }
 
         }
@@ -38,8 +38,43 @@ namespace com.project.pagapoco.app.webapi.Controllers
         [HttpPost("register")]
         public async Task<ActionResult> Register([FromBody] RegisterRequest request)
         {
-            var response = await _authService.Register(request);
-            return Ok(response);
+
+            try
+            {
+                var response = await _authService.Register(request);
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = "Error al registrar", error = ex.Message });
+
+            }
         }
+
+        public async Task<ActionResult> Logout()
+        {
+            try
+            {
+                var result = await _authService.Logout();
+
+                if (result)
+                {
+                    return Ok(new
+                    {
+                        message = "Logout exitoso",
+                        timestamp = DateTime.UtcNow
+                    });
+                }
+                else
+                {
+                    return BadRequest(new { message = "Error durante el logout" });
+                }
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = "Error durante el logout", error = ex.Message });
+            }
+        }
+
     }
 }

@@ -17,7 +17,7 @@ select * from tbl_user;
 );*/
 
 
-/*INSERT INTO dbo.tbl_user (dni, first_name, last_name, email, [password])
+INSERT INTO dbo.tbl_user (dni, first_name, last_name, email, [password])
     VALUES 
         (12345678, 'Juan', 'Pérez', 'juan.perez@email.com', '123456'),
         (23456789, 'María', 'González', 'maria.gonzalez@email.com', 'abc123'),
@@ -48,7 +48,7 @@ select * from tbl_user;
         (27901234, 'Thiago', 'Moreno', 'thiago.moreno@email.com', 'thia34'),
         (28012345, 'Amparo', 'Blanco', 'amparo.blanco@email.com', 'ampa56'),
         (29123456, 'Lautaro', 'Guerrero', 'lautaro.guerrero@email.com', 'lauta7'),
-        (30234567, 'Milagros', 'Campos', 'milagros.campos@email.com', 'mila89');*/
+        (30234567, 'Milagros', 'Campos', 'milagros.campos@email.com', 'mila89');
 
 
 DECLARE @PageIndex INT = 1,
@@ -77,6 +77,7 @@ ORDER BY Fila DESC
 OFFSET @Offset ROWS
 FETCH NEXT @PageSize ROWS ONLY;
  
+ -- Ejemplo de Joselo
  /*CREATE PROCEDURE getUserPagination 
 	@PageIndex INT = 1,
 	@PageSize INT = 10
@@ -101,6 +102,27 @@ FETCH NEXT @PageSize ROWS ONLY;
 
  END*/
 
- EXEC getUserPagination @PageIndex = 1, @PageSize = 15;
+ -- Modificacion
+/*ALTER PROCEDURE getUserPagination 
+    @PageIndex INT = 1,
+    @PageSize INT = 10
+AS
+BEGIN
+    DECLARE @Offset INT = (@PageSize * (@PageIndex - 1));
 
+    SELECT
+        u.id AS Id,
+        u.dni AS Dni,
+        u.first_name AS FirstName,
+        u.last_name AS LastName,
+        u.email AS Email,
+        u.[password] AS Password,
+        TotalFilas = COUNT(*) OVER()
+    FROM tbl_user u
+    ORDER BY u.id ASC
+    OFFSET @Offset ROWS
+    FETCH NEXT @PageSize ROWS ONLY
+END*/
 
+-- Ejecucion de prueba
+ --EXEC getUserPagination @PageIndex = 1, @PageSize = 15;

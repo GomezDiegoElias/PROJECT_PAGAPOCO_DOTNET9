@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using com.project.pagapoco.core.entities;
+using com.project.pagapoco.core.entities.Dto.Response;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 
@@ -20,7 +21,7 @@ namespace com.project.pagapoco.core.data.Repository
             _dbContext = dbContext;
         }
 
-        public async Task<List<User>> FindAll(int pageIndex, int pageSize)
+        public async Task<PaginatedResponse<User>> FindAll(int pageIndex, int pageSize)
         {
             return await _dbContext.getUserPagination(pageIndex, pageSize);
         }

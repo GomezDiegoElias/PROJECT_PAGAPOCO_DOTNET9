@@ -8,5 +8,6 @@ namespace com.project.pagapoco.app.webapi.Controllers
     {
         public Task<ActionResult> Login(LoginRequest request);
         public Task<ActionResult> Register(RegisterRequest request);
+        public Task<ActionResult> Logout();
     }
 }
