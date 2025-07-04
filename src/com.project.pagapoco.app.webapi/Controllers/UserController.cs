@@ -3,6 +3,7 @@ using com.project.pagapoco.app.webapi.Dto.Response;
 using com.project.pagapoco.app.webapi.Mapper;
 using com.project.pagapoco.core.business.Service;
 using com.project.pagapoco.core.entities;
+using com.project.pagapoco.core.entities.Dto.Response;
 using com.project.pagapoco.core.exceptions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -27,25 +28,28 @@ namespace com.project.pagapoco.app.webapi.Controllers
 
         //[AllowAnonymous]
         [HttpGet]
-        public async Task<ActionResult<ApiResponse<List<UserResponse>>>> ListAllUsers(
+        public async Task<ActionResult<ApiResponse<PaginatedResponse<UserResponse>>>> ListAllUsers(
             [FromQuery] int pageIndex = 1,
             [FromQuery] int pageSize = 10
         )
         {
+            var paginatedUsers = await _userService.GetAllUsers(pageIndex, pageSize);
 
-            var users = await _userService.GetAllUsers(pageIndex, pageSize);
-
-            var usersDtos = users
+            var usersDtos = paginatedUsers.Items
                 .Select(user => UserMapper.UserToUserResponse(user))
                 .ToList();
 
-            return Ok(new ApiResponse<List<UserResponse>>(
-                    //"Success",
-                    true,
-                    "Users retrieved successfully",
-                    usersDtos
-                ));
+            var paginatedResponse = new PaginatedResponse<UserResponse>
+            {
+                Items = usersDtos,
+                TotalCount = paginatedUsers.TotalCount
+            };
 
+            return Ok(new ApiResponse<PaginatedResponse<UserResponse>>(
+                true,
+                "Users retrieved successfully",
+                paginatedResponse
+            ));
         }
 
         [HttpGet("{dni}")]

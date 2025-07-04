@@ -77,6 +77,7 @@ ORDER BY Fila DESC
 OFFSET @Offset ROWS
 FETCH NEXT @PageSize ROWS ONLY;
  
+ -- Ejemplo de Joselo
  /*CREATE PROCEDURE getUserPagination 
 	@PageIndex INT = 1,
 	@PageSize INT = 10
@@ -101,6 +102,27 @@ FETCH NEXT @PageSize ROWS ONLY;
 
  END*/
 
- EXEC getUserPagination @PageIndex = 1, @PageSize = 15;
+ -- Modificacion
+/*ALTER PROCEDURE getUserPagination 
+    @PageIndex INT = 1,
+    @PageSize INT = 10
+AS
+BEGIN
+    DECLARE @Offset INT = (@PageSize * (@PageIndex - 1));
 
+    SELECT
+        u.id AS Id,
+        u.dni AS Dni,
+        u.first_name AS FirstName,
+        u.last_name AS LastName,
+        u.email AS Email,
+        u.[password] AS Password,
+        TotalFilas = COUNT(*) OVER()
+    FROM tbl_user u
+    ORDER BY u.id ASC
+    OFFSET @Offset ROWS
+    FETCH NEXT @PageSize ROWS ONLY
+END*/
 
+-- Ejecucion de prueba
+ --EXEC getUserPagination @PageIndex = 1, @PageSize = 15;

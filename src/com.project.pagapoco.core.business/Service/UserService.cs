@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using com.project.pagapoco.core.data.Repository;
 using com.project.pagapoco.core.entities;
+using com.project.pagapoco.core.entities.Dto.Response;
 using com.project.pagapoco.core.exceptions;
 
 namespace com.project.pagapoco.core.business.Service
@@ -20,7 +21,7 @@ namespace com.project.pagapoco.core.business.Service
             _userRepository = userRepository;
         }
 
-        public async Task<List<User>> GetAllUsers(int pageIndex, int pageSize)
+        public async Task<PaginatedResponse<User>> GetAllUsers(int pageIndex, int pageSize)
         {
             return await _userRepository.FindAll(pageIndex, pageSize);
         }
