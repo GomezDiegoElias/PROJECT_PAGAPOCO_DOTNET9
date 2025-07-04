@@ -13,6 +13,8 @@ namespace com.project.pagapoco.core.data
 
         public DbSet<User> Users { get; set; }
 
+        public DbSet<Publication> Publications { get; set; }
+
         public async Task<PaginatedResponse<User>> getUserPagination(int pageIndex, int pageSize)
         {
             var users = new List<User>();
@@ -63,6 +65,10 @@ namespace com.project.pagapoco.core.data
 
             modelBuilder.Entity<User>()
                 .HasIndex(u => u.Dni)
+                .IsUnique();
+
+            modelBuilder.Entity<Publication>()
+                .HasIndex(p => p.CodePublication)
                 .IsUnique();
 
             modelBuilder.Entity<UserPaginationResult>()

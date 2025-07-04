@@ -33,6 +33,8 @@ namespace com.project.pagapoco.core.entities
         [Column("password", TypeName = "varchar(150)")]
         public string Password { get; set; } = string.Empty;
 
+        public ICollection<Publication> Publications { get; set; }
+
         public User() { }
         public User(long dni, string firstName, string lastName, string email, string password)
         {
