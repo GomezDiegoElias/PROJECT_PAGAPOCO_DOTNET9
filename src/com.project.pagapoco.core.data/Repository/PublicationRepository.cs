@@ -30,9 +30,11 @@ namespace com.project.pagapoco.core.data.Repository
             return await _dbContenxt.Publications.FirstOrDefaultAsync(p => p.CodePublication == code);
         }
 
-        public Task<Publication> Save(Publication publication)
+        public async Task<Publication> Save(Publication publication)
         {
-            throw new NotImplementedException();
+            await _dbContenxt.AddAsync(publication);
+            await _dbContenxt.SaveChangesAsync();
+            return publication;
         }
 
         public Task<Publication> Update(Publication publication)
@@ -40,9 +42,17 @@ namespace com.project.pagapoco.core.data.Repository
             throw new NotImplementedException();
         }
 
-        public Task<bool> DeleteByCode(long code)
+        public async Task<bool> DeleteByCode(long code)
         {
-            throw new NotImplementedException();
+            var publication = await this.FindByCode(code);
+
+            if (publication == null) return false;
+
+            _dbContenxt.Remove(publication);
+            await _dbContenxt.SaveChangesAsync();
+
+            return true;
+        
         }
 
     }

@@ -1,4 +1,5 @@
 ﻿using com.project.pagapoco.app.webapi.Controllers.Imp;
+using com.project.pagapoco.app.webapi.Dto.Request;
 using com.project.pagapoco.app.webapi.Dto.Response;
 using com.project.pagapoco.app.webapi.Mapper;
 using com.project.pagapoco.core.business.Service.Imp;
@@ -71,9 +72,19 @@ namespace com.project.pagapoco.app.webapi.Controllers
 
         }
 
-        public Task<ActionResult> CreatePublication(Publication publication)
+        [HttpPost]
+        public async Task<ActionResult<ApiResponse<PublicationResponse>>> CreatePublication([FromBody] PublicationCreatedRequest request)
         {
-            throw new NotImplementedException();
+
+            Publication publication = PublicationMapper.PublicationCreatedRequestToPublication(request);
+            Publication publicationSaved = await _publicationService.SavePublication(publication);
+
+            return StatusCode(StatusCodes.Status201Created, new ApiResponse<PublicationResponse>(
+                true,
+                "Publication created successfully",
+                PublicationMapper.PublicationToPublicationResponse(publicationSaved)
+            ));
+
         }
 
         public Task<ActionResult> EditPublication(Publication publication)
@@ -81,9 +92,28 @@ namespace com.project.pagapoco.app.webapi.Controllers
             throw new NotImplementedException();
         }
 
-        public Task<ActionResult> RemovePublication(long code)
+        [HttpDelete("{code}")]
+        public async Task<ActionResult<ApiResponse<object>>> RemovePublication(long code)
         {
-            throw new NotImplementedException();
+            
+            var publicationDeleted = await _publicationService.GetPublicationByCode(code);
+
+            if (publicationDeleted == null)
+                return NotFound(new ApiResponse<object>(
+                    false,
+                    "Publication not found",
+                    null
+                ));
+
+            await _publicationService.DeletePublication(publicationDeleted.CodePublication);
+
+            return Ok(new ApiResponse<object>(
+                true,
+                "Publication deleted successfully",
+                null
+            ));
+
+
         }
 
     }
