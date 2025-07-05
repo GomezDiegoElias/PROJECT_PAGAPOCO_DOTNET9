@@ -42,9 +42,17 @@ namespace com.project.pagapoco.core.data.Repository
             throw new NotImplementedException();
         }
 
-        public Task<bool> DeleteByCode(long code)
+        public async Task<bool> DeleteByCode(long code)
         {
-            throw new NotImplementedException();
+            var publication = await this.FindByCode(code);
+
+            if (publication == null) return false;
+
+            _dbContenxt.Remove(publication);
+            await _dbContenxt.SaveChangesAsync();
+
+            return true;
+        
         }
 
     }

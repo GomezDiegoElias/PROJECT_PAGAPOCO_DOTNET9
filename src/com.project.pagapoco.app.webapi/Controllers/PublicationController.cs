@@ -92,9 +92,28 @@ namespace com.project.pagapoco.app.webapi.Controllers
             throw new NotImplementedException();
         }
 
-        public Task<ActionResult> RemovePublication(long code)
+        [HttpDelete("{code}")]
+        public async Task<ActionResult<ApiResponse<object>>> RemovePublication(long code)
         {
-            throw new NotImplementedException();
+            
+            var publicationDeleted = await _publicationService.GetPublicationByCode(code);
+
+            if (publicationDeleted == null)
+                return NotFound(new ApiResponse<object>(
+                    false,
+                    "Publication not found",
+                    null
+                ));
+
+            await _publicationService.DeletePublication(publicationDeleted.CodePublication);
+
+            return Ok(new ApiResponse<object>(
+                true,
+                "Publication deleted successfully",
+                null
+            ));
+
+
         }
 
     }

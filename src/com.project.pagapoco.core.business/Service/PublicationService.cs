@@ -40,9 +40,9 @@ namespace com.project.pagapoco.core.business.Service
             throw new NotImplementedException();
         }
 
-        public Task<bool> DeletePublication(long code)
+        public async Task<bool> DeletePublication(long code)
         {
-            throw new NotImplementedException();
+            return await _publicationRepository.DeleteByCode(code);
         }
 
     }
