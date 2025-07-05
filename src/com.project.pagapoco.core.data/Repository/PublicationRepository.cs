@@ -6,20 +6,28 @@ using System.Threading.Tasks;
 using com.project.pagapoco.core.data.Repository.Imp;
 using com.project.pagapoco.core.entities;
 using com.project.pagapoco.core.entities.Dto.Response;
+using Microsoft.EntityFrameworkCore;
 
 namespace com.project.pagapoco.core.data.Repository
 {
     public class PublicationRepository : IPublicationRepository
     {
-        
-        public Task<PaginatedResponse<Publication>> FindAll(int pageIndex, int pageSize)
+
+        private readonly AppDbContext _dbContenxt;
+
+        public PublicationRepository(AppDbContext dbContext)
         {
-            throw new NotImplementedException();
+            _dbContenxt = dbContext;
         }
 
-        public Task<Publication> FindById(int id)
+        public async Task<PaginatedResponse<Publication>> FindAll(int pageIndex, int pageSize)
         {
-            throw new NotImplementedException();
+            return await _dbContenxt.getPublicationPagination(pageIndex, pageSize);
+        }
+
+        public async Task<Publication?> FindByCode(long code)
+        {
+            return await _dbContenxt.Publications.FirstOrDefaultAsync(p => p.CodePublication == code);
         }
 
         public Task<Publication> Save(Publication publication)

@@ -27,7 +27,7 @@ namespace com.project.pagapoco.core.data.Repository
             return await _dbContext.getUserPagination(pageIndex, pageSize);
         }
 
-        public async Task<User> FindByDni(long dni)
+        public async Task<User?> FindByDni(long dni)
         {
             return await _dbContext.Users.FirstOrDefaultAsync(u => u.Dni == dni);
         }
@@ -74,7 +74,7 @@ namespace com.project.pagapoco.core.data.Repository
             return true;
 
         }
-        public async Task<User> FindByEmail(string email)
+        public async Task<User?> FindByEmail(string email)
         {
             return await _dbContext.Users.FirstOrDefaultAsync(u => u.Email == email);
         }
