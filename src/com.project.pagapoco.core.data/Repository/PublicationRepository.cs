@@ -11,10 +11,17 @@ namespace com.project.pagapoco.core.data.Repository
 {
     public class PublicationRepository : IPublicationRepository
     {
-        
+
+        private readonly AppDbContext _dbContenxt;
+
+        public PublicationRepository(AppDbContext dbContext)
+        {
+            _dbContenxt = dbContext;
+        }
+
         public Task<PaginatedResponse<Publication>> FindAll(int pageIndex, int pageSize)
         {
-            throw new NotImplementedException();
+            return _dbContenxt.getPublicationPagination(pageIndex, pageSize);
         }
 
         public Task<Publication> FindById(int id)

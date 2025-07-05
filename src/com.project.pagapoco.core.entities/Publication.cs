@@ -19,7 +19,7 @@ namespace com.project.pagapoco.core.entities
         [StringLength(20)]
         public string Title { get; set; } = string.Empty;
         public string Description { get; set; } = string.Empty;
-        public decimal price { get; set; }
+        public decimal Price { get; set; }
 
         [Column("image_url")]
         public string? ImageUrl { get; set; }
@@ -36,6 +36,20 @@ namespace com.project.pagapoco.core.entities
         [Column("user_id")]
         public int UserId { get; set; }
         public User User { get; set; }
+
+        public Publication() { }
+
+        public Publication(long codePublication, string title, string description, decimal price, string brand, string model, int year, int userId)
+        {
+            CodePublication = codePublication;
+            Title = title;
+            Description = description;
+            Price = price;
+            Brand = brand;
+            Model = model;
+            Year = year;
+            UserId = userId;
+        }
 
     }
 }
