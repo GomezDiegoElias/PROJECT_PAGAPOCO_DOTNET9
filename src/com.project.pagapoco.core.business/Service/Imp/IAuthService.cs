@@ -7,7 +7,7 @@ using com.project.pagapoco.core.entities;
 using com.project.pagapoco.core.entities.Dto.Request;
 using com.project.pagapoco.core.entities.Dto.Response;
 
-namespace com.project.pagapoco.core.business.Service
+namespace com.project.pagapoco.core.business.Service.Imp
 {
     public interface IAuthService
     {

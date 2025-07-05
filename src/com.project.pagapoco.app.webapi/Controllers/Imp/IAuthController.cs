@@ -2,7 +2,7 @@
 using com.project.pagapoco.core.entities.Dto.Request;
 using Microsoft.AspNetCore.Mvc;
 
-namespace com.project.pagapoco.app.webapi.Controllers
+namespace com.project.pagapoco.app.webapi.Controllers.Imp
 {
     public interface IAuthController
     {

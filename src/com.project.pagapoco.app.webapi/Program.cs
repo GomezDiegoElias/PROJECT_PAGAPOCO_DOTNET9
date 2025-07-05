@@ -6,6 +6,8 @@ using com.project.pagapoco.core.data.Repository;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using com.project.pagapoco.core.business.Service.Imp;
+using com.project.pagapoco.core.data.Repository.Imp;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -29,6 +31,8 @@ builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IUserService, UserService>();
 //builder.Services.AddScoped<UserMapper>();
 builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<IPublicationRepository, PublicationRepository>();
+builder.Services.AddScoped<IPublicationService, PublicationService>();
 
 // Configuración JWT
 var jwtConfig = builder.Configuration.GetSection("Jwt").Get<JwtConfig>();

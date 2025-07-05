@@ -3,7 +3,7 @@ using com.project.pagapoco.app.webapi.Dto.Response;
 using com.project.pagapoco.core.entities.Dto.Response;
 using Microsoft.AspNetCore.Mvc;
 
-namespace com.project.pagapoco.app.webapi.Controllers
+namespace com.project.pagapoco.app.webapi.Controllers.Imp
 {
     public interface IUserController
     {

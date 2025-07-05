@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using com.project.pagapoco.core.data.Repository.Imp;
 using com.project.pagapoco.core.entities;
 using com.project.pagapoco.core.entities.Dto.Response;
 using Microsoft.EntityFrameworkCore;
@@ -26,7 +27,7 @@ namespace com.project.pagapoco.core.data.Repository
             return await _dbContext.getUserPagination(pageIndex, pageSize);
         }
 
-        public async Task<User> FindByDni(long dni)
+        public async Task<User?> FindByDni(long dni)
         {
             return await _dbContext.Users.FirstOrDefaultAsync(u => u.Dni == dni);
         }
@@ -73,7 +74,7 @@ namespace com.project.pagapoco.core.data.Repository
             return true;
 
         }
-        public async Task<User> FindByEmail(string email)
+        public async Task<User?> FindByEmail(string email)
         {
             return await _dbContext.Users.FirstOrDefaultAsync(u => u.Email == email);
         }
