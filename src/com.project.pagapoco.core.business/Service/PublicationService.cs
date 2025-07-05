@@ -25,9 +25,9 @@ namespace com.project.pagapoco.core.business.Service
             return _publicationRepository.FindAll(pageIndex, pageSize);
         }
 
-        public Task<Publication> GetPublicationById(int id)
+        public Task<Publication?> GetPublicationByCode(long code)
         {
-            throw new NotImplementedException();
+            return _publicationRepository.FindByCode(code);
         }
 
         public Task<Publication> SavePublication(Publication publication)

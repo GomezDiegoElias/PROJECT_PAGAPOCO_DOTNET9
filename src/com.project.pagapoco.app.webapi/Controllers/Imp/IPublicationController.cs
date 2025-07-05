@@ -8,7 +8,7 @@ namespace com.project.pagapoco.app.webapi.Controllers.Imp
     public interface IPublicationController
     {
         Task<ActionResult<ApiResponse<PaginatedResponse<PublicationResponse>>>> ListAllPublications(int pageIndex, int pageSize);
-        Task<ActionResult> SearchPublicationById(int id);
+        Task<ActionResult<ApiResponse<PublicationResponse>>> SearchPublicationByCode(long code);
         Task<ActionResult> CreatePublication(Publication publication);
         Task<ActionResult> EditPublication(Publication publication);
         Task<ActionResult> RemovePublication(long code);

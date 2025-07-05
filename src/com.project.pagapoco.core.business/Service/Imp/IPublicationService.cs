@@ -11,7 +11,7 @@ namespace com.project.pagapoco.core.business.Service.Imp
     public interface IPublicationService
     {
         Task<PaginatedResponse<Publication>> GetAllPublications(int pageIndex, int pageSize);
-        Task<Publication> GetPublicationById(int id);
+        Task<Publication?> GetPublicationByCode(long code);
         Task<Publication> SavePublication(Publication publication);
         Task<Publication> UpdatePublication(Publication publication);
         Task<bool> DeletePublication(long code);

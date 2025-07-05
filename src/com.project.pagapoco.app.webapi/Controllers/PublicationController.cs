@@ -50,17 +50,33 @@ namespace com.project.pagapoco.app.webapi.Controllers
 
         }
 
+        [HttpGet("{code}")]
+        public async Task<ActionResult<ApiResponse<PublicationResponse>>> SearchPublicationByCode(long code)
+        {
+            
+            var publication = await _publicationService.GetPublicationByCode(code);
+
+            if (publication == null) 
+                return NotFound(new ApiResponse<PublicationResponse>(
+                    false,
+                    "Publication not found",
+                    null
+                ));
+
+            return Ok(new ApiResponse<PublicationResponse>(
+                    true,
+                    "Publication retrieved successfully",
+                    PublicationMapper.PublicationToPublicationResponse(publication)
+                ));
+
+        }
+
         public Task<ActionResult> CreatePublication(Publication publication)
         {
             throw new NotImplementedException();
         }
 
         public Task<ActionResult> EditPublication(Publication publication)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<ActionResult> SearchPublicationById(int id)
         {
             throw new NotImplementedException();
         }
