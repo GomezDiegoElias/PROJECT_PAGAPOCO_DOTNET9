@@ -1,4 +1,5 @@
 ﻿using com.project.pagapoco.app.webapi.Controllers.Imp;
+using com.project.pagapoco.app.webapi.Dto.Request;
 using com.project.pagapoco.app.webapi.Dto.Response;
 using com.project.pagapoco.app.webapi.Mapper;
 using com.project.pagapoco.core.business.Service.Imp;
@@ -71,9 +72,19 @@ namespace com.project.pagapoco.app.webapi.Controllers
 
         }
 
-        public Task<ActionResult> CreatePublication(Publication publication)
+        [HttpPost]
+        public async Task<ActionResult<ApiResponse<PublicationResponse>>> CreatePublication([FromBody] PublicationCreatedRequest request)
         {
-            throw new NotImplementedException();
+
+            Publication publication = PublicationMapper.PublicationCreatedRequestToPublication(request);
+            Publication publicationSaved = await _publicationService.SavePublication(publication);
+
+            return StatusCode(StatusCodes.Status201Created, new ApiResponse<PublicationResponse>(
+                true,
+                "Publication created successfully",
+                PublicationMapper.PublicationToPublicationResponse(publicationSaved)
+            ));
+
         }
 
         public Task<ActionResult> EditPublication(Publication publication)

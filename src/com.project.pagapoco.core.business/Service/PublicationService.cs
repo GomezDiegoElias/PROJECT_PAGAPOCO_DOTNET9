@@ -30,9 +30,9 @@ namespace com.project.pagapoco.core.business.Service
             return _publicationRepository.FindByCode(code);
         }
 
-        public Task<Publication> SavePublication(Publication publication)
+        public async Task<Publication> SavePublication(Publication publication)
         {
-            throw new NotImplementedException();
+            return await _publicationRepository.Save(publication);
         }
 
         public Task<Publication> UpdatePublication(Publication publication)

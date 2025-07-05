@@ -1,4 +1,5 @@
-﻿using com.project.pagapoco.app.webapi.Dto.Response;
+﻿using com.project.pagapoco.app.webapi.Dto.Request;
+using com.project.pagapoco.app.webapi.Dto.Response;
 using com.project.pagapoco.core.entities;
 
 namespace com.project.pagapoco.app.webapi.Mapper
@@ -19,6 +20,21 @@ namespace com.project.pagapoco.app.webapi.Mapper
                 publication.Model,
                 publication.Year.ToString(),
                 publication.UserId
+            );
+        }
+
+        // Mapeo de PublicationCreatedRequest a Publication
+        public static Publication PublicationCreatedRequestToPublication(PublicationCreatedRequest request)
+        {
+            return new Publication(
+                request.Code,
+                request.Title,
+                request.Description ?? string.Empty,
+                request.Price,
+                request.Brand,
+                request.Model,
+                request.Year,
+                request.UserId
             );
         }
 
