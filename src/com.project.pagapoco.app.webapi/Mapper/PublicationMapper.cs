@@ -38,5 +38,19 @@ namespace com.project.pagapoco.app.webapi.Mapper
             );
         }
 
+        // Mapeo de PublicationUpdatedRequest a Publication
+        public static Publication PublicationUpdatedRequestToPublication(PublicationUpdatedRequest request)
+        {
+            return new Publication
+            {
+                Title = request.Title,
+                Description = request.Description ?? string.Empty,
+                Price = request.Price,
+                Brand = request.Brand,
+                Model = request.Model,
+                Year = request.Year
+            };
+        }
+
     }
 }

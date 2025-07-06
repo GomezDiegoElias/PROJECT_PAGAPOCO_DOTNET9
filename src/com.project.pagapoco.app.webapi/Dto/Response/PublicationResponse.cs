@@ -8,7 +8,7 @@
         decimal Price,
         string Brand,
         string Model,
-        string Año,
+        string Year,
         int UserId
     );
 }

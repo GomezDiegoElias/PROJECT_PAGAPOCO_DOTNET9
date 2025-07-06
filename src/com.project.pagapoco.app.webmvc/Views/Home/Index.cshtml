@@ -1,6 +1,7 @@
 ﻿@using com.project.pagapoco.app.webapi.Dto.Response
 @using com.project.pagapoco.core.entities.Dto.Response
-@model PaginatedResponse<UserResponse>
+@* @model PaginatedResponse<UserResponse> *@
+@model PaginatedResponse<PublicationResponse>
 
 @{
     ViewData["Title"] = "Home Page";
@@ -16,7 +17,7 @@
                    asp-area=""
                    asp-controller="Users"
                    asp-action="UserForm">
-                    Nuevo usuario
+                    Nuevo publicación
                 </a>
             </div>
 
@@ -25,12 +26,12 @@
                 <form method="get" asp-action="Search" class="d-flex w-100">
                     <input type="hidden" name="pageSize" value="@ViewBag.PageSize" />
 
-                    <span class="input-group-text" id="inputGroup-sizing-default">Buscar por ID</span>
+                    <span class="input-group-text" id="inputGroup-sizing-default">Buscar por Codigo</span>
                     <input type="number"
                            class="form-control"
                            name="id"
                            value="@ViewBag.SearchId"
-                           aria-label="Buscar por ID"
+                           aria-label="Buscar por Codigo"
                            aria-describedby="inputGroup-sizing-default"
                            min="1"
                            required>
@@ -52,22 +53,23 @@
                 <table class="table table-striped table-hover">
                     <thead class="table-dark">
                         <tr>
-                            <th>DNI</th>
-                            <th>USUARIO</th>
-                            <th>EMAIL</th>
+                            <th>CODIGO</th>
+                            <th>TITULO</th>
+                            <th>PRECIO</th>
                             <th>ACCIONES</th>
                         </tr>
                     </thead>
                     <tbody>
                         @if (Model.Items.Any())
                         {
-                            @foreach (var user in Model.Items)
+                            @foreach (var publication in Model.Items)
                             {
                                 <tr>
-                                    <td>@user.Dni</td>
-                                    <td>@user.FirstName @user.LastName</td>
-                                    <td>@user.Email</td>
+                                    <td>@publication.CodePublication</td>
+                                    <td>@publication.Title</td>
+                                    <td>@publication.Price</td>
                                     <td>
+                                        <a class="btn btn-outline-info" href="#">Mas detalles</a>
                                         <a class="btn btn-outline-primary" href="#">Editar</a>
                                         <a class="btn btn-outline-danger" href="#">Eliminar</a>
                                     </td>

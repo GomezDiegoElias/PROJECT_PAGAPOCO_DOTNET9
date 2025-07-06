@@ -37,9 +37,25 @@ namespace com.project.pagapoco.core.data.Repository
             return publication;
         }
 
-        public Task<Publication> Update(Publication publication)
+        public async Task<Publication> Update(Publication publication)
         {
-            throw new NotImplementedException();
+            
+            var publicationUpdate = await this.FindByCode(publication.CodePublication)
+                ?? throw new KeyNotFoundException($"Publication with code {publication.CodePublication} not found");
+
+            publicationUpdate.Title = publication.Title;
+            publicationUpdate.Description = publication.Description;
+            publicationUpdate.Price = publication.Price;
+            
+            publicationUpdate.Brand = publication.Brand;
+            publicationUpdate.Model = publication.Model;
+            publicationUpdate.Year = publication.Year;
+            publicationUpdate.UpdatedAt = DateTime.UtcNow;
+
+            await _dbContenxt.SaveChangesAsync();
+
+            return publicationUpdate;
+
         }
 
         public async Task<bool> DeleteByCode(long code)
