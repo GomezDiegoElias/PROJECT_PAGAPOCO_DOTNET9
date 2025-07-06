@@ -11,7 +11,7 @@ namespace com.project.pagapoco.app.webapi.Controllers.Imp
         Task<ActionResult<ApiResponse<PaginatedResponse<PublicationResponse>>>> ListAllPublications(int pageIndex, int pageSize);
         Task<ActionResult<ApiResponse<PublicationResponse>>> SearchPublicationByCode(long code);
         Task<ActionResult<ApiResponse<PublicationResponse>>> CreatePublication(PublicationCreatedRequest request);
-        Task<ActionResult> EditPublication(Publication publication);
+        Task<ActionResult<ApiResponse<PublicationResponse>>> EditPublication(long codePublication, PublicationUpdatedRequest request);
         Task<ActionResult<ApiResponse<object>>> RemovePublication(long code);
     }
 }

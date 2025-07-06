@@ -25,7 +25,7 @@ namespace com.project.pagapoco.core.business.Service
             return _publicationRepository.FindAll(pageIndex, pageSize);
         }
 
-        public Task<Publication?> GetPublicationByCode(long code)
+        public Task<Publication> GetPublicationByCode(long code)
         {
             return _publicationRepository.FindByCode(code);
         }
@@ -35,9 +35,9 @@ namespace com.project.pagapoco.core.business.Service
             return await _publicationRepository.Save(publication);
         }
 
-        public Task<Publication> UpdatePublication(Publication publication)
+        public async Task<Publication> UpdatePublication(Publication publication)
         {
-            throw new NotImplementedException();
+            return await _publicationRepository.Update(publication);
         }
 
         public async Task<bool> DeletePublication(long code)

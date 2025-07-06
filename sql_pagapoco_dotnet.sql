@@ -195,7 +195,7 @@ END*/
  --EXEC getUserPagination @PageIndex = 1, @PageSize = 15;
 
  -- Paginacion para publicaciones
- /* CREATE PROCEDURE getPublicationPagination 
+ /*CREATE PROCEDURE getPublicationPagination 
     @PageIndex INT = 1,
     @PageSize INT = 10
 AS
@@ -203,7 +203,7 @@ BEGIN
     DECLARE @Offset INT = (@PageSize * (@PageIndex - 1));
 
     SELECT
-        p.id AS Id,
+        p.id_publication AS Id,
         p.code_publication AS Code,
         p.Title AS Title,
         p.[Description] AS Description,
@@ -217,7 +217,7 @@ BEGIN
         p.user_id AS userId,
         TotalFilas = COUNT(*) OVER()
     FROM tbl_publication p
-    ORDER BY p.id ASC
+    ORDER BY p.id_publication ASC
     OFFSET @Offset ROWS
     FETCH NEXT @PageSize ROWS ONLY
 END*/

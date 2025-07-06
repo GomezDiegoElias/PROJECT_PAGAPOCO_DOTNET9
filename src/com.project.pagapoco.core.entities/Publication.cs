@@ -67,5 +67,15 @@ namespace com.project.pagapoco.core.entities
             UserId = userId;
         }
 
+        public Publication(string title, string description, decimal price, string brand, string model, int year)
+        {
+            Title = title;
+            Description = description;
+            Price = price;
+            Brand = brand;
+            Model = model;
+            Year = year;
+        }
+
     }
 }

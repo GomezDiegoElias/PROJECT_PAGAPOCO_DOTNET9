@@ -87,9 +87,31 @@ namespace com.project.pagapoco.app.webapi.Controllers
 
         }
 
-        public Task<ActionResult> EditPublication(Publication publication)
+        [HttpPut("{codePublication}")]
+        public async Task<ActionResult<ApiResponse<PublicationResponse>>> EditPublication(long codePublication, [FromBody] PublicationUpdatedRequest request)
         {
-            throw new NotImplementedException();
+
+            Publication publicationExisting = await _publicationService.GetPublicationByCode(codePublication);
+
+            if (publicationExisting == null)
+                return NotFound(new ApiResponse<PublicationResponse>(
+                    false,
+                    $"Error: Publication whit code {codePublication} does not exist",
+                    null
+                ));
+
+            Publication publication = PublicationMapper.PublicationUpdatedRequestToPublication(request);
+
+            publication.CodePublication = codePublication;
+
+            Publication publicationUpdate = await _publicationService.UpdatePublication(publication);
+
+            return Ok(new ApiResponse<PublicationResponse>(
+                true,
+                "Publication updated successfully",
+                PublicationMapper.PublicationToPublicationResponse(publicationUpdate)
+            ));
+
         }
 
         [HttpDelete("{code}")]
