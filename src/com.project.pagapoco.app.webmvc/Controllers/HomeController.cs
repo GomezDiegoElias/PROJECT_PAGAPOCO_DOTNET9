@@ -14,45 +14,26 @@ namespace com.project.pagapoco.app.webmvc.Controllers
         private readonly IPublicationService _publicationService;
         private readonly ILogger<HomeController> _logger;
 
-        //public HomeController(IUserService userService, ILogger<HomeController> logger)
-        //{
-        //    _userService = userService;
-        //    _logger = logger;
-        //}
-
         public HomeController(IPublicationService publicationService, ILogger<HomeController> logger)
         {
             _publicationService = publicationService;
             _logger = logger;
         }
 
-        //public async Task<IActionResult> Index(int page = 1, int pageSize = 10)
-        //{
-        //    page = page < 1 ? 1 : page;
-        //    pageSize = pageSize < 1 ? 10 : pageSize;
-
-        //    var users = await _userService.getUsers(page, pageSize);
-
-        //    ViewBag.CurrentPage = page;
-        //    ViewBag.PageSize = pageSize;
-        //    ViewBag.TotalPages = (int)Math.Ceiling(users.TotalCount / (double)pageSize);
-
-        //    return View(users);
-        //}
-
+        // Funcion de paginación de publicaciones
         // Controlador que renderiza la vista principal de publicaciones - Paginación
-        public async Task<IActionResult> Index(int pageIndex = 1, int pageSize = 10)
+        public async Task<IActionResult> Index(int page = 1, int pageSize = 10)
         {
 
             // Validación de parámetros de paginación
-            pageIndex = pageIndex < 1 ? 1 : pageIndex;
+            page = page < 1 ? 1 : page;
             pageSize = pageSize < 1 ? 10 : pageSize;
 
             // Obtención de publicaciones desde el servicio
-            var publications = await _publicationService.GetPublications(pageIndex, pageSize);
+            var publications = await _publicationService.GetPublications(page, pageSize);
 
             // Manejo de caso sin publicaciones
-            ViewBag.CurrentPage = pageIndex;
+            ViewBag.CurrentPage = page;
             ViewBag.PageSize = pageSize;
             ViewBag.TotalPages = (int)Math.Ceiling(publications.TotalCount / (double)pageSize);
 
@@ -61,6 +42,27 @@ namespace com.project.pagapoco.app.webmvc.Controllers
 
         }
 
+        // Hacer aqui las demas funciones del controlador de la entidad Publication
+
+        // ...
+
+        /*
+            1. Inicio de sesion y registro de usuarios (TERMINADO)
+            2. Funcion de paginación de publicaciones (TERMINADO)
+            - (FALTA) 
+                • USAR EL MISMO FORMULARIO DE CREACIÓN PARA LA EDICIÓN DE PUBLICACIONES
+            4. Función para mostrar el formulario de creación de una nueva publicación
+            5. Función para crear una nueva publicación.
+            6. Función para mostrar el formulario de edición de una publicación.
+            7. Función para editar una publicación existente.
+            8. Función para eliminar una publicación.
+            9. Función para mostrar los detalles de una publicación específica.
+            10. Función para buscar publicaciones por codigo de publicacion.
+
+         */
+
+
+        // Otras funciones del controlador por defecto
         public IActionResult Privacy()
         {
             return View();
