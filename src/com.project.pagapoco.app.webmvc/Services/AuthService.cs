@@ -1,7 +1,8 @@
-﻿using com.project.pagapoco.core.entities.Dto.Request;
+﻿using com.project.pagapoco.app.webmvc.Services.Imp;
+using com.project.pagapoco.core.entities.Dto.Request;
 using com.project.pagapoco.core.entities.Dto.Response;
 
-namespace com.project.pagapoco.app.webmvc.Services.Imp
+namespace com.project.pagapoco.app.webmvc.Services
 {
     public class AuthService : IAuthService
     {
