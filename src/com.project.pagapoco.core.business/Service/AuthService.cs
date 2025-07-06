@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using com.project.pagapoco.core.business.Service.Imp;
@@ -19,6 +20,8 @@ namespace com.project.pagapoco.core.business.Service
     {
         private readonly IUserRepository _userRepository;
         private readonly JwtConfig _jwtConfig;
+        private const int SaltLength = 6;
+        private const int HashIterations = 10000;
 
         public AuthService(IUserRepository userRepository, JwtConfig jwtConfig)
         {
@@ -43,7 +46,7 @@ namespace com.project.pagapoco.core.business.Service
             Console.WriteLine($"Contraseña proporcionada: {request.Password}");
             Console.WriteLine($"Hash almacenado: {user.Password}");
 
-            bool passwordValid = VerifyPassword(request.Password, user.Password);
+            bool passwordValid = VerifyPassword(request.Password, user.Password, user.Salt);
             Console.WriteLine($"Contraseña válida: {passwordValid}");
 
             if (!passwordValid)
@@ -80,11 +83,16 @@ namespace com.project.pagapoco.core.business.Service
         public async Task<AuthResponse> Register(RegisterRequest request)
         {
 
+            // validaciones
             if (await _userRepository.FindByEmail(request.Email) != null)
                 throw new ApplicationException("Email ya registrado");
 
             if (await _userRepository.FindByDni(request.Dni) != null)
                 throw new ApplicationException("DNI ya registrado");
+
+            string salt = GenerateRandomSalt(SaltLength);
+
+            string hashedPassword = HashPasswordWithSalt(request.Password, salt);
 
             var newUser = new User
             {
@@ -92,7 +100,8 @@ namespace com.project.pagapoco.core.business.Service
                 FirstName = request.FirstName,
                 LastName = request.LastName,
                 Email = request.Email,
-                Password = BCrypt.Net.BCrypt.HashPassword(request.Password),
+                Password = hashedPassword,
+                Salt = salt
             };
 
             var createdUser = await _userRepository.Save(newUser);
@@ -113,9 +122,83 @@ namespace com.project.pagapoco.core.business.Service
             return await Task.FromResult(true);
         }
 
-        private bool VerifyPassword(string password, string storedHash)
+        private bool VerifyPassword(string password, string storedHash, string salt)
         {
-            return BCrypt.Net.BCrypt.Verify(password, storedHash);
+            // Generar hash con el salt almacenado
+            string hashedPassword = HashPasswordWithSalt(password, salt);
+
+            // Comparar los hashes
+            return hashedPassword == storedHash;
+        }
+
+        private string GenerateRandomSalt(int length)
+        {
+            const string validChars = "ABCDEFGHJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+            char[] salt = new char[length];
+
+            using (var rng = RandomNumberGenerator.Create())
+            {
+                byte[] randomBytes = new byte[length];
+                rng.GetBytes(randomBytes);
+
+                for (int i = 0; i < length; i++)
+                {
+                    salt[i] = validChars[randomBytes[i] % validChars.Length];
+                }
+            }
+
+            return new string(salt);
+        }
+
+        //private string HashPasswordWithSalt(string password, string salt)
+        //{
+        //    // Usar PBKDF2 para generar el hash
+        //    using (var pbkdf2 = new Rfc2898DeriveBytes(
+        //        password: password + salt, // Concatenar password y salt
+        //        salt: Encoding.UTF8.GetBytes(salt), // Convertir salt a bytes
+        //        iterations: HashIterations,
+        //        hashAlgorithm: HashAlgorithmName.SHA256))
+        //        // hash generado con SHA256
+
+        //    {
+        //        byte[] hashBytes = pbkdf2.GetBytes(32); // 32 bytes = 256 bits
+        //        return Convert.ToHexString(hashBytes).ToLower();
+        //    }
+
+        //}
+
+        // Método adicional solo para debug
+        private string HashPasswordOnly(string password)
+        {
+            using (var pbkdf2 = new Rfc2898DeriveBytes(
+                password: password,
+                salt: new byte[0], // Sin salt
+                iterations: HashIterations,
+                hashAlgorithm: HashAlgorithmName.SHA256))
+            {
+                byte[] hashBytes = pbkdf2.GetBytes(32);
+                return Convert.ToHexString(hashBytes).ToLower();
+            }
+        }
+
+        private string HashPasswordWithSalt(string password, string salt)
+        {
+            // 1. Primero hashear solo la contraseña (SOLO PARA DEBUG)
+            string passwordOnlyHash = HashPasswordOnly(password);
+            Console.WriteLine($"DEBUG - Hash solo de contraseña: {passwordOnlyHash}");
+
+            // 2. Luego hashear con salt (producción)
+            using (var pbkdf2 = new Rfc2898DeriveBytes(
+                password: password + salt,
+                salt: Encoding.UTF8.GetBytes(salt),
+                iterations: HashIterations,
+                hashAlgorithm: HashAlgorithmName.SHA256))
+            {
+                byte[] hashBytes = pbkdf2.GetBytes(32);
+                string finalHash = Convert.ToHexString(hashBytes).ToLower();
+                Console.WriteLine($"DEBUG - Hash con salt: {finalHash}");
+                return finalHash;
+            }
         }
 
     }

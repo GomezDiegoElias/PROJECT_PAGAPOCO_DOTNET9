@@ -27,15 +27,21 @@ namespace com.project.pagapoco.core.entities
 
         [Required]
         [EmailAddress]
+        [Column("email", TypeName = "varchar(100)")]
         public string Email { get; set; } = string.Empty;
 
         [Required]
         [Column("password", TypeName = "varchar(150)")]
         public string Password { get; set; } = string.Empty;
 
+        [Required]
+        [Column("salt", TypeName = "varchar(50)")]
+        public string Salt { get; set; }
+
         public ICollection<Publication> Publications { get; set; }
 
         public User() { }
+
         public User(long dni, string firstName, string lastName, string email, string password)
         {
             Dni = dni;

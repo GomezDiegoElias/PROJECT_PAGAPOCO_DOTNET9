@@ -9,6 +9,7 @@ namespace com.project.pagapoco.core.entities
 
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [Column("id_publication")]
         public long Id { get; set; }
 
         [Required]
@@ -17,14 +18,29 @@ namespace com.project.pagapoco.core.entities
 
         [Required]
         [StringLength(20)]
+        [Column("title", TypeName = "varchar(100)")]
         public string Title { get; set; } = string.Empty;
+
+        [Column("description", TypeName = "varchar(500)")]
         public string Description { get; set; } = string.Empty;
+        
+        [Required]
+        [Column("price", TypeName = "decimal(18,2)")]
         public decimal Price { get; set; }
 
         [Column("image_url")]
         public string? ImageUrl { get; set; }
+
+        [Required]
+        [Column("brand", TypeName = "varchar(50)")]
         public string Brand { get; set; } = string.Empty;
+
+        [Required]
+        [Column("model", TypeName = "varchar(50)")]
         public string Model { get; set; } = string.Empty;
+
+        [Required]
+        [Column("year")]
         public int Year { get; set; }
 
         [Column("create_at")]
