@@ -11,6 +11,8 @@ using com.project.pagapoco.core.data.Repository.Imp;
 
 var builder = WebApplication.CreateBuilder(args);
 
+var configuration = builder.Configuration;
+
 // Add services to the container.
 
 builder.Services.AddControllers();
@@ -18,8 +20,11 @@ builder.Services.AddControllers();
 builder.Services.AddOpenApi();
 
 // Configuración de la base de datos
-var bdConnectionString = builder.Configuration.GetConnectionString("BDConnectionString")
-    ?? throw new InvalidOperationException("No se encontró 'BDConnectionString' en la configuración.");
+//var bdConnectionString = builder.Configuration.GetConnectionString("BDConnectionString")
+//    ?? throw new InvalidOperationException("No se encontró 'BDConnectionString' en la configuración.");
+
+var bdConnectionString = configuration.GetValue<string>("BD_CONNECTION_STRING")
+    ?? throw new InvalidOperationException("No se encontró 'BD_CONNECTION_STRING' en la configuración.");
 
 // Registrar DbContext
 builder.Services.AddDbContext<AppDbContext>(options =>
