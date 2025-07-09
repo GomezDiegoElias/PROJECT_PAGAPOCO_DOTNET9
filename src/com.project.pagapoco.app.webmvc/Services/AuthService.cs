@@ -62,18 +62,6 @@ namespace com.project.pagapoco.app.webmvc.Services
         
         }
 
-        //public async Task<bool> ResetPassword(string token, string newPassword)
-        //{
-        //    var body = new
-        //    {
-        //        token,
-        //        newPassword
-        //    };
-
-        //    var response = await _httpClient.PostAsJsonAsync("/api/Auth/reset-password", body);
-        //    return response.IsSuccessStatusCode;
-        //}
-
         public async Task<bool> ResetPassword(string token, string newPassword)
         {
             var request = new PasswordResetConfirm
