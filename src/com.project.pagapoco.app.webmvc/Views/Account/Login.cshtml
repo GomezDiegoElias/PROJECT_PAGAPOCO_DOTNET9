@@ -17,6 +17,10 @@
     </style>
 </head>
 <body>
+    @if (TempData["Message"] != null)
+    {
+        <script>alert('@TempData["Message"]');</script>
+    }
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-6">
@@ -44,7 +48,7 @@
                             <a asp-action="Register">¿No tienes una cuenta? Regístrate</a>
                         </div>
                         <div class="text-center mt-3">
-                            <a href="#">¿Olvidaste la contraseña?</a>
+                            <a asp-action="ForgotPassword">¿Olvidaste la contraseña?</a>
                         </div>
                     </div>
                 </div>

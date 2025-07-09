@@ -14,5 +14,7 @@ namespace com.project.pagapoco.core.business.Service.Imp
         public Task<AuthResponse> Login(LoginRequest request);
         public Task<AuthResponse> Register(RegisterRequest request);
         public Task<bool> Logout();
+        public Task<bool> SendPasswordResetEmail(string email);
+        public Task<bool> ResetPassword(string token, string newPassword);
     }
 }

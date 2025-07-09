@@ -71,6 +71,12 @@ builder.Services.AddCors(options =>
     });
 });
 
+// Configuración de SMTP
+var smtpConfig = builder.Configuration.GetSection("Smtp").Get<SmtpConfig>();
+builder.Services.AddSingleton(smtpConfig);
+builder.Services.AddSingleton<EmailService>();
+
+
 var app = builder.Build();
 
 using (var scope = app.Services.CreateScope())

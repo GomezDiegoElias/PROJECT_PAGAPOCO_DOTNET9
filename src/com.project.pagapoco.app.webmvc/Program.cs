@@ -1,6 +1,7 @@
 using System.Net.Http.Headers;
 using com.project.pagapoco.app.webmvc.Services;
 using com.project.pagapoco.app.webmvc.Services.Imp;
+using com.project.pagapoco.core.config;
 using Microsoft.AspNetCore.Authentication.Cookies;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -39,6 +40,8 @@ builder.Services.AddAuthentication(options =>
     options.AccessDeniedPath = "/Account/AccessDenied";
     options.ExpireTimeSpan = TimeSpan.FromMinutes(60);
 });
+
+builder.Services.Configure<JwtConfig>(builder.Configuration.GetSection("JwtConfig"));
 
 var app = builder.Build();
 
