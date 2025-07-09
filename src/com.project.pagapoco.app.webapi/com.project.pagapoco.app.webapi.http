@@ -1,16 +1,77 @@
 @base = http://localhost:5208
 
-GET {{com.project.pagapoco.app.webapi_HostAddress}}/weatherforecast/
+GET {{base}}/api/User
 Accept: application/json
 
 ###
 
-GET {{base}}/api/User/list
+GET {{base}}/api/User?pageIndex=4&pageSize=10
+Accept: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiIyIiwiZW1haWwiOiJtaWNvcnJlb2p1bmlvckBnbWFpbC5jb20iLCJGdWxsTmFtZSI6Ikp1bmlvciBHb21leiIsIm5iZiI6MTc1MDk0NzE5MSwiZXhwIjoxNzUwOTUwNzkxLCJpYXQiOjE3NTA5NDcxOTEsImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3Q6NTIwOCIsImF1ZCI6Imh0dHA6Ly9sb2NhbGhvc3Q6NTIwOCJ9.mTml7XTqtKXWFtjwro0IJCZOYZsrp7tvGL_4aG4OFkk
+
+###
+
+GET {{base}}/api/User/469242365
 Accept: application/json
 
 ###
 
-GET {{base}}/api/User/
+POST {{base}}/api/User
+Content-Type: application/json
+
+{
+    "dni": 46924236,
+    "firstname": "Diego",
+    "lastname": "Gomez",
+    "email": "taysonm895@gmail.com",
+    "password": "3624105"
+}
+
+###
+
+PUT {{base}}/api/User/46924236
+Content-Type: application/json
+
+{
+    "firstname": "Diego Elias",
+    "lastname": "Gomez",
+    "email": "anikilogomez123@gmail.com"
+}
+
+###
+
+DELETE {{base}}/api/User/456789015
 Accept: application/json
 
 ###
+
+POST {{base}}/api/Auth/login
+Content-Type: application/json
+
+{
+    "Email": "micorreojunior@gmail.com",
+    "Password": "123456"
+}
+
+###
+
+POST {{base}}/api/Auth/register
+Content-Type: application/json
+
+{
+    "dni": 44745058,
+    "firstname": "Sebastian Esteban",
+    "lastname": "Gomez",
+    "email": "micorreosebastian@gmail.com",
+    "password": "123456"
+}
+
+###
+
+POST {{base}}/api/Auth/login
+Content-Type: application/json
+
+{
+    "email": "micorreodiego@gmail.com",
+    "password": "123456"
+}
