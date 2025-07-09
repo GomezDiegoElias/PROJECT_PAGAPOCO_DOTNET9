@@ -81,7 +81,7 @@ namespace com.project.pagapoco.app.webapi.Controllers
         public async Task<IActionResult> RequestPasswordReset([FromBody] PasswordResetRequest dto)
         {
             var result = await _authService.SendPasswordResetEmail(dto.Email);
-            return result ? Ok(new { message = "Correo enviado si el email existe" }) : Ok(new { message = "Correo enviado si el email existe" });
+            return result ? Ok(new { message = "Correo enviado" }) : Ok(new { message = "Correo enviado" });
         }
 
         [HttpPost("reset-password")]

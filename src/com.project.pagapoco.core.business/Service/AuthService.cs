@@ -152,6 +152,7 @@ namespace com.project.pagapoco.core.business.Service
             return new string(salt);
         }
 
+        // metodo que va en producción
         //private string HashPasswordWithSalt(string password, string salt)
         //{
         //    // Usar PBKDF2 para generar el hash
@@ -170,6 +171,8 @@ namespace com.project.pagapoco.core.business.Service
         //}
 
         // Método adicional solo para debug
+        // Para corroborar que el hash que se genera es el mismo en caso de que exista contraseñas repetidas
+        // El salt es el que varía, pero el hash de la contraseña debería ser el mismo
         private string HashPasswordOnly(string password)
         {
             using (var pbkdf2 = new Rfc2898DeriveBytes(
@@ -202,66 +205,6 @@ namespace com.project.pagapoco.core.business.Service
                 return finalHash;
             }
         }
-
-        //public async Task<bool> SendPasswordResetEmail(string email)
-        //{
-        //    var user = await _userRepository.FindByEmail(email);
-        //    if (user == null) return false;
-
-        //    var tokenHandler = new JwtSecurityTokenHandler();
-        //    var key = Encoding.ASCII.GetBytes(_jwtConfig.Secret);
-
-        //    var tokenDescriptor = new SecurityTokenDescriptor
-        //    {
-        //        Subject = new ClaimsIdentity(new[] { new Claim(ClaimTypes.Email, user.Email) }),
-        //        Expires = DateTime.UtcNow.AddMinutes(30),
-        //        SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
-        //    };
-
-        //    var token = tokenHandler.CreateToken(tokenDescriptor);
-        //    var resetToken = tokenHandler.WriteToken(token);
-
-        //    var resetLink = $"https://localhost:7191/Account/ResetPassword?token={resetToken}"; // MVC -> http: 5235 / https: 7191 //
-
-        //    await _emailService.SendPasswordResetEmailAsync(email, resetLink);
-
-        //    return true;
-        //}
-
-        //public async Task<bool> ResetPassword(string token, string newPassword)
-        //{
-        //    var tokenHandler = new JwtSecurityTokenHandler();
-        //    var key = Encoding.ASCII.GetBytes(_jwtConfig.Secret);
-
-        //    try
-        //    {
-        //        var principal = tokenHandler.ValidateToken(token, new TokenValidationParameters
-        //        {
-        //            ValidateIssuer = false,
-        //            ValidateAudience = false,
-        //            ValidateIssuerSigningKey = true,
-        //            IssuerSigningKey = new SymmetricSecurityKey(key),
-        //            ValidateLifetime = true
-        //        }, out _);
-
-        //        var email = principal.FindFirst(ClaimTypes.Email)?.Value;
-        //        var user = await _userRepository.FindByEmail(email);
-        //        if (user == null) return false;
-
-        //        var newSalt = GenerateRandomSalt(6);
-        //        var newHashedPassword = HashPasswordWithSalt(newPassword, newSalt);
-
-        //        user.Password = newHashedPassword;
-        //        user.Salt = newSalt;
-        //        await _userRepository.Update(user);
-        //        return true;
-        //    }
-        //    catch
-        //    {
-        //        return false;
-        //    }
-        //}
-
         public async Task<bool> SendPasswordResetEmail(string email)
         {
             var user = await _userRepository.FindByEmail(email);
@@ -288,56 +231,6 @@ namespace com.project.pagapoco.core.business.Service
 
             return true;
         }
-
-        //public async Task<bool> ResetPassword(string token, string newPassword)
-        //{
-        //    var tokenHandler = new JwtSecurityTokenHandler();
-        //    var key = Encoding.ASCII.GetBytes(_jwtConfig.Secret);
-
-        //    try
-        //    {
-        //        var principal = tokenHandler.ValidateToken(token, new TokenValidationParameters
-        //        {
-        //            ValidateIssuer = true,  // Cambiar a true para validar el emisor
-        //            ValidIssuer = _jwtConfig.Issuer,
-        //            ValidateAudience = true,  // Cambiar a true para validar la audiencia
-        //            ValidAudience = _jwtConfig.Audience,
-        //            ValidateIssuerSigningKey = true,
-        //            IssuerSigningKey = new SymmetricSecurityKey(key),
-        //            ValidateLifetime = true,
-        //            ClockSkew = TimeSpan.Zero  // Eliminar margen de tiempo para expiración
-        //        }, out _);
-
-        //        var email = principal.FindFirst(ClaimTypes.Email)?.Value;
-        //        if (string.IsNullOrEmpty(email))
-        //            return false;
-
-        //        var user = await _userRepository.FindByEmail(email);
-        //        if (user == null) return false;
-
-        //        // Generar nuevo salt y hash
-        //        var newSalt = GenerateRandomSalt(SaltLength);
-        //        var newHashedPassword = HashPasswordWithSalt(newPassword, newSalt);
-
-        //        // Actualizar usuario
-        //        user.Password = newHashedPassword;
-        //        user.Salt = newSalt;
-
-        //        // Debug: imprimir valores antes de actualizar
-        //        Console.WriteLine($"Updating password for user: {email}");
-        //        Console.WriteLine($"New Salt: {newSalt}");
-        //        Console.WriteLine($"New Hashed Password: {newHashedPassword}");
-
-        //        await _userRepository.Update(user);
-        //        return true;
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        Console.WriteLine($"Error resetting password: {ex.Message}");
-        //        return false;
-        //    }
-        //}
-
         public async Task<bool> ResetPassword(string token, string newPassword)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
