@@ -77,5 +77,19 @@ namespace com.project.pagapoco.app.webapi.Controllers
             }
         }
 
+        [HttpPost("request-password-reset")]
+        public async Task<IActionResult> RequestPasswordReset([FromBody] PasswordResetRequest dto)
+        {
+            var result = await _authService.SendPasswordResetEmail(dto.Email);
+            return result ? Ok(new { message = "Correo enviado si el email existe" }) : Ok(new { message = "Correo enviado si el email existe" });
+        }
+
+        [HttpPost("reset-password")]
+        public async Task<IActionResult> ResetPassword([FromBody] PasswordResetConfirm dto)
+        {
+            var result = await _authService.ResetPassword(dto.Token, dto.NewPassword);
+            return result ? Ok(new { message = "Contraseña actualizada" }) : BadRequest(new { message = "Token inválido o expirado" });
+        }
+
     }
 }

@@ -40,25 +40,52 @@ namespace com.project.pagapoco.core.data.Repository
             return user;
         }
 
+        //public async Task<User> Update(User user)
+        //{
+
+        //    var userUpdate = await this.FindByDni(user.Dni)
+        //        ?? throw new KeyNotFoundException($"User whit DNI {user.Dni} not found");
+
+        //    //userUpdate.FirstName = user.FirstName;
+        //    //userUpdate.LastName = user.LastName;
+        //    //userUpdate.Email = user.Email;
+        //    userUpdate.Password = user.Password;
+        //    userUpdate.Salt = user.Salt;
+
+        //    if (!string.IsNullOrEmpty(user.Password))
+        //    {
+        //        userUpdate.Password = user.Password;
+        //    }
+
+        //    await _dbContext.SaveChangesAsync();
+
+        //    return userUpdate;
+
+        //}
+
         public async Task<User> Update(User user)
         {
-
             var userUpdate = await this.FindByDni(user.Dni)
                 ?? throw new KeyNotFoundException($"User whit DNI {user.Dni} not found");
 
-            userUpdate.FirstName = user.FirstName;
-            userUpdate.LastName = user.LastName;
-            userUpdate.Email = user.Email;
+            // Asegurarse de que solo actualizamos password y salt
+            userUpdate.Password = user.Password;
+            userUpdate.Salt = user.Salt;
 
-            if (!string.IsNullOrEmpty(user.Password))
+            // Marcar como modificado explícitamente
+            _dbContext.Entry(userUpdate).Property(x => x.Password).IsModified = true;
+            _dbContext.Entry(userUpdate).Property(x => x.Salt).IsModified = true;
+
+            try
             {
-                userUpdate.Password = user.Password;
+                await _dbContext.SaveChangesAsync();
+                return userUpdate;
             }
-
-            await _dbContext.SaveChangesAsync();
-
-            return userUpdate;
-
+            catch (DbUpdateException ex)
+            {
+                Console.WriteLine($"Error updating user: {ex.Message}");
+                throw;
+            }
         }
 
         public async Task<bool> DeleteByDni(long dni)

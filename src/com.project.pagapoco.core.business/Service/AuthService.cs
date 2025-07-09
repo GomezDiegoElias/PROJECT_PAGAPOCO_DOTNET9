@@ -22,11 +22,13 @@ namespace com.project.pagapoco.core.business.Service
         private readonly JwtConfig _jwtConfig;
         private const int SaltLength = 6;
         private const int HashIterations = 10000;
+        private readonly EmailService _emailService;
 
-        public AuthService(IUserRepository userRepository, JwtConfig jwtConfig)
+        public AuthService(IUserRepository userRepository, JwtConfig jwtConfig, EmailService emailService)
         {
             _userRepository = userRepository;
             _jwtConfig = jwtConfig;
+            _emailService = emailService;
         }
 
         public async Task<AuthResponse> Login(LoginRequest request)
@@ -198,6 +200,205 @@ namespace com.project.pagapoco.core.business.Service
                 string finalHash = Convert.ToHexString(hashBytes).ToLower();
                 Console.WriteLine($"DEBUG - Hash con salt: {finalHash}");
                 return finalHash;
+            }
+        }
+
+        //public async Task<bool> SendPasswordResetEmail(string email)
+        //{
+        //    var user = await _userRepository.FindByEmail(email);
+        //    if (user == null) return false;
+
+        //    var tokenHandler = new JwtSecurityTokenHandler();
+        //    var key = Encoding.ASCII.GetBytes(_jwtConfig.Secret);
+
+        //    var tokenDescriptor = new SecurityTokenDescriptor
+        //    {
+        //        Subject = new ClaimsIdentity(new[] { new Claim(ClaimTypes.Email, user.Email) }),
+        //        Expires = DateTime.UtcNow.AddMinutes(30),
+        //        SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+        //    };
+
+        //    var token = tokenHandler.CreateToken(tokenDescriptor);
+        //    var resetToken = tokenHandler.WriteToken(token);
+
+        //    var resetLink = $"https://localhost:7191/Account/ResetPassword?token={resetToken}"; // MVC -> http: 5235 / https: 7191 //
+
+        //    await _emailService.SendPasswordResetEmailAsync(email, resetLink);
+
+        //    return true;
+        //}
+
+        //public async Task<bool> ResetPassword(string token, string newPassword)
+        //{
+        //    var tokenHandler = new JwtSecurityTokenHandler();
+        //    var key = Encoding.ASCII.GetBytes(_jwtConfig.Secret);
+
+        //    try
+        //    {
+        //        var principal = tokenHandler.ValidateToken(token, new TokenValidationParameters
+        //        {
+        //            ValidateIssuer = false,
+        //            ValidateAudience = false,
+        //            ValidateIssuerSigningKey = true,
+        //            IssuerSigningKey = new SymmetricSecurityKey(key),
+        //            ValidateLifetime = true
+        //        }, out _);
+
+        //        var email = principal.FindFirst(ClaimTypes.Email)?.Value;
+        //        var user = await _userRepository.FindByEmail(email);
+        //        if (user == null) return false;
+
+        //        var newSalt = GenerateRandomSalt(6);
+        //        var newHashedPassword = HashPasswordWithSalt(newPassword, newSalt);
+
+        //        user.Password = newHashedPassword;
+        //        user.Salt = newSalt;
+        //        await _userRepository.Update(user);
+        //        return true;
+        //    }
+        //    catch
+        //    {
+        //        return false;
+        //    }
+        //}
+
+        public async Task<bool> SendPasswordResetEmail(string email)
+        {
+            var user = await _userRepository.FindByEmail(email);
+            if (user == null) return false;
+
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var key = Encoding.ASCII.GetBytes(_jwtConfig.Secret);
+
+            var tokenDescriptor = new SecurityTokenDescriptor
+            {
+                Subject = new ClaimsIdentity(new[] { new Claim(ClaimTypes.Email, user.Email) }),
+                Expires = DateTime.UtcNow.AddMinutes(30),
+                Issuer = _jwtConfig.Issuer, // Añadir issuer
+                Audience = _jwtConfig.Audience, // Añadir audience
+                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+            };
+
+            var token = tokenHandler.CreateToken(tokenDescriptor);
+            var resetToken = tokenHandler.WriteToken(token);
+
+            var resetLink = $"https://localhost:7191/Account/ResetPassword?token={resetToken}";
+
+            await _emailService.SendPasswordResetEmailAsync(email, resetLink);
+
+            return true;
+        }
+
+        //public async Task<bool> ResetPassword(string token, string newPassword)
+        //{
+        //    var tokenHandler = new JwtSecurityTokenHandler();
+        //    var key = Encoding.ASCII.GetBytes(_jwtConfig.Secret);
+
+        //    try
+        //    {
+        //        var principal = tokenHandler.ValidateToken(token, new TokenValidationParameters
+        //        {
+        //            ValidateIssuer = true,  // Cambiar a true para validar el emisor
+        //            ValidIssuer = _jwtConfig.Issuer,
+        //            ValidateAudience = true,  // Cambiar a true para validar la audiencia
+        //            ValidAudience = _jwtConfig.Audience,
+        //            ValidateIssuerSigningKey = true,
+        //            IssuerSigningKey = new SymmetricSecurityKey(key),
+        //            ValidateLifetime = true,
+        //            ClockSkew = TimeSpan.Zero  // Eliminar margen de tiempo para expiración
+        //        }, out _);
+
+        //        var email = principal.FindFirst(ClaimTypes.Email)?.Value;
+        //        if (string.IsNullOrEmpty(email))
+        //            return false;
+
+        //        var user = await _userRepository.FindByEmail(email);
+        //        if (user == null) return false;
+
+        //        // Generar nuevo salt y hash
+        //        var newSalt = GenerateRandomSalt(SaltLength);
+        //        var newHashedPassword = HashPasswordWithSalt(newPassword, newSalt);
+
+        //        // Actualizar usuario
+        //        user.Password = newHashedPassword;
+        //        user.Salt = newSalt;
+
+        //        // Debug: imprimir valores antes de actualizar
+        //        Console.WriteLine($"Updating password for user: {email}");
+        //        Console.WriteLine($"New Salt: {newSalt}");
+        //        Console.WriteLine($"New Hashed Password: {newHashedPassword}");
+
+        //        await _userRepository.Update(user);
+        //        return true;
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Console.WriteLine($"Error resetting password: {ex.Message}");
+        //        return false;
+        //    }
+        //}
+
+        public async Task<bool> ResetPassword(string token, string newPassword)
+        {
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var key = Encoding.ASCII.GetBytes(_jwtConfig.Secret);
+
+            try
+            {
+                var validationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuer = true,
+                    ValidIssuer = _jwtConfig.Issuer,
+                    ValidateAudience = true,
+                    ValidAudience = _jwtConfig.Audience,
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(key),
+                    ValidateLifetime = true,
+                    ClockSkew = TimeSpan.Zero
+                };
+
+                // Validar el token
+                var principal = tokenHandler.ValidateToken(token, validationParameters, out _);
+
+                var email = principal.FindFirst(ClaimTypes.Email)?.Value;
+                if (string.IsNullOrEmpty(email))
+                {
+                    Console.WriteLine("No se encontró el claim de email en el token");
+                    return false;
+                }
+
+                var user = await _userRepository.FindByEmail(email);
+                if (user == null)
+                {
+                    Console.WriteLine($"Usuario con email {email} no encontrado");
+                    return false;
+                }
+
+                // Generar nuevo salt y hash
+                var newSalt = GenerateRandomSalt(SaltLength);
+                var newHashedPassword = HashPasswordWithSalt(newPassword, newSalt);
+
+                Console.WriteLine($"Actualizando contraseña para usuario: {email}");
+                Console.WriteLine($"Nuevo Salt: {newSalt}");
+                Console.WriteLine($"Nuevo Hash: {newHashedPassword}");
+
+                user.Password = newHashedPassword;
+                user.Salt = newSalt;
+
+                await _userRepository.Update(user);
+
+                Console.WriteLine("Contraseña actualizada exitosamente");
+                return true;
+            }
+            catch (SecurityTokenException ex)
+            {
+                Console.WriteLine($"Error de seguridad al validar el token: {ex.Message}");
+                return false;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error inesperado al resetear contraseña: {ex}");
+                return false;
             }
         }
 
