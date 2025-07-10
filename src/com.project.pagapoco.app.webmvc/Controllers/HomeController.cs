@@ -173,6 +173,93 @@ namespace com.project.pagapoco.app.webmvc.Controllers
             }
         }
 
+        //[HttpGet]
+        //public async Task<IActionResult> EditPublication(long code)
+        //{
+        //    try
+        //    {
+        //        var publication = await _publicationService.GetPublicationByCode(code);
+
+        //        if (publication == null)
+        //        {
+        //            return NotFound();
+        //        }
+
+        //        var request = new PublicationCreatedRequest(
+        //            Code: publication.CodePublication,
+        //            Title: publication.Title,
+        //            Description: publication.Description,
+        //            Price: publication.Price,
+        //            Brand: publication.Brand,
+        //            Model: publication.Model,
+        //            Year: int.Parse(publication.Year),
+        //            UserId: publication.UserId
+        //        );
+
+        //        return View("FormPublication", request);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        _logger.LogError(ex, "Error al cargar publicación para editar");
+        //        TempData["ErrorMessage"] = "Error al cargar la publicación para editar";
+        //        return RedirectToAction("Index");
+        //    }
+        //}
+
+        [HttpGet]
+        public async Task<IActionResult> EditPublication(long code)
+        {
+            try
+            {
+                var publication = await _publicationService.GetPublicationByCode(code);
+
+                if (publication == null)
+                {
+                    return NotFound();
+                }
+
+                var request = new PublicationCreatedRequest(
+                    Code: publication.CodePublication,
+                    Title: publication.Title,
+                    Description: publication.Description,
+                    Price: publication.Price,
+                    Brand: publication.Brand,
+                    Model: publication.Model,
+                    Year: int.Parse(publication.Year),
+                    UserId: publication.UserId
+                );
+
+                return View("EditPublication", request);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error al cargar publicación para editar");
+                TempData["ErrorMessage"] = "Error al cargar la publicación para editar";
+                return RedirectToAction("Index");
+            }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> UpdatePublication(PublicationCreatedRequest request)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View("FormPublication", request);
+            }
+
+            try
+            {
+                var updatedPublication = await _publicationService.UpdatePublication(request);
+                TempData["SuccessMessage"] = "Publicación actualizada exitosamente";
+                return RedirectToAction("Index");
+            }
+            catch (ApplicationException ex)
+            {
+                ModelState.AddModelError(string.Empty, ex.Message);
+                return View("FormPublication", request);
+            }
+        }
+
         // Otras funciones del controlador por defecto
         public IActionResult Privacy()
         {

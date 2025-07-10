@@ -71,7 +71,11 @@
                                     <td>@publication.Price</td>
                                     <td>
                                         <a class="btn btn-outline-info btn-details" data-id="@publication.CodePublication">Mas detalles</a>
-                                        <a class="btn btn-outline-primary" href="#">Editar</a>
+                                        <a class="btn btn-outline-primary"
+                                           asp-action="EditPublication"
+                                           asp-route-code="@publication.CodePublication">
+                                            Editar
+                                        </a>
                                         <button class="btn btn-outline-danger btn-delete" data-id="@publication.CodePublication">Eliminar</button>
                                     </td>
                                 </tr>
@@ -192,7 +196,7 @@
                         type: 'DELETE',
                         data: { code: code },
                         success: function() {
-                            window.location.reload(); // Recarga la página para ver los cambios
+                            window.location.reload();
                         },
                         error: function(xhr) {
                             alert('Error al eliminar la publicación: ' + xhr.responseText);

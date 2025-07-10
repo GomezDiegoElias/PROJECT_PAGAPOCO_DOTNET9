@@ -146,5 +146,56 @@ namespace com.project.pagapoco.app.webmvc.Services
 
         }
 
+        public async Task<PublicationResponse> UpdatePublication(PublicationCreatedRequest request)
+        {
+            var token = _httpContextAccessor.HttpContext?.User?.FindFirst("JWT")?.Value;
+
+            if (string.IsNullOrEmpty(token))
+            {
+                throw new ApplicationException("Usuario no autenticado");
+            }
+
+            var httpRequest = new HttpRequestMessage(HttpMethod.Put, $"/api/Publication/{request.Code}")
+            {
+                Content = JsonContent.Create(new
+                {
+                    title = request.Title,
+                    description = request.Description,
+                    price = request.Price,
+                    brand = request.Brand,
+                    model = request.Model,
+                    year = request.Year
+                })
+            };
+
+            httpRequest.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+            var response = await _httpClient.SendAsync(httpRequest);
+
+            if (response.IsSuccessStatusCode)
+            {
+                var content = await response.Content.ReadFromJsonAsync<ApiResponse<PublicationResponse>>();
+                if (content?.Data == null)
+                {
+                    throw new ApplicationException("La API no devolvió los datos esperados");
+                }
+                return content.Data;
+            }
+
+            if (response.StatusCode == HttpStatusCode.NotFound)
+            {
+                throw new ApplicationException("Publicación no encontrada");
+            }
+
+            if (response.StatusCode == HttpStatusCode.Unauthorized)
+            {
+                await _httpContextAccessor.HttpContext.SignOutAsync();
+                throw new UnauthorizedAccessException("Sesión expirada, por favor vuelva a iniciar sesión");
+            }
+
+            var errorContent = await response.Content.ReadAsStringAsync();
+            throw new ApplicationException($"Error al actualizar publicación: {response.StatusCode} - {errorContent}");
+        }
+
     }
 }

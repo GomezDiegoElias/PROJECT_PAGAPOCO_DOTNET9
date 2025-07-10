@@ -10,5 +10,6 @@ namespace com.project.pagapoco.app.webmvc.Services.Imp
         public Task<PublicationResponse> CreatedPublication(PublicationCreatedRequest request);
         public Task<PublicationResponse> GetPublicationByCode(long code);
         public Task<bool> DeletePublication(long code);
+        Task<PublicationResponse> UpdatePublication(PublicationCreatedRequest request);
     }
 }
