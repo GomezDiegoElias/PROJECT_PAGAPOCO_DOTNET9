@@ -106,5 +106,10 @@ namespace com.project.pagapoco.core.data.Repository
             return await _dbContext.Users.FirstOrDefaultAsync(u => u.Email == email);
         }
 
+        public async Task<User?> FindByQrSessionId(Guid sessionId)
+        {
+            return await _dbContext.Users.FirstOrDefaultAsync(u => u.QrSessionId == sessionId);
+        }
+
     }
 }

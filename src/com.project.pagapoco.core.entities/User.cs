@@ -11,7 +11,11 @@ namespace com.project.pagapoco.core.entities
 
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int Id { get; set; }
+        [Column(TypeName = "uniqueidentifier")]
+        public Guid Id { get; set; }
+
+        [Column("qr_session_id", TypeName = "uniqueidentifier")]
+        public Guid QrSessionId { get; set; } = Guid.NewGuid();
 
         [Required]
         [StringLength(20)]

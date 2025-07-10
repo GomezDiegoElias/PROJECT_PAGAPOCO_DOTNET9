@@ -38,6 +38,7 @@ builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IPublicationRepository, PublicationRepository>();
 builder.Services.AddScoped<IPublicationService, PublicationService>();
+builder.Services.AddScoped<IQrLoginService, QrLoginService>();
 
 // Configuración JWT
 var jwtConfig = builder.Configuration.GetSection("Jwt").Get<JwtConfig>();
