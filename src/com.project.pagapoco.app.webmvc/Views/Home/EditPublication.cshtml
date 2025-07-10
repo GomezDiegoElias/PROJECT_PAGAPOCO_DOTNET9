@@ -1,0 +1,60 @@
+﻿@using com.project.pagapoco.app.webapi.Dto.Request
+@model PublicationCreatedRequest
+@{
+    ViewData["Title"] = "Editar Publicación";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<div class="w-50">
+    <form asp-action="UpdatePublication" method="post">
+        <input type="hidden" asp-for="Code" />
+        <input type="hidden" asp-for="UserId" />
+
+        <!-- Campos editables -->
+        <div class="form-floating mb-3">
+            <input asp-for="Title" class="form-control" placeholder="Título" required>
+            <label asp-for="Title">Título</label>
+            <span asp-validation-for="Title" class="text-danger"></span>
+        </div>
+
+        <div class="form-floating mb-3">
+            <input asp-for="Description" class="form-control" placeholder="Descripción" required>
+            <label asp-for="Description"></label>
+            <span asp-validation-for="Description" class="text-danger"></span>
+        </div>
+
+        <div class="form-floating mb-3">
+            <input asp-for="Price" class="form-control" placeholder="Precio" required>
+            <label asp-for="Price"></label>
+            <span asp-validation-for="Price" class="text-danger"></span>
+        </div>
+
+        <div class="form-floating mb-3">
+            <input asp-for="Brand" class="form-control" placeholder="Marca" required>
+            <label asp-for="Brand"></label>
+            <span asp-validation-for="Brand" class="text-danger"></span>
+        </div>
+
+        <div class="form-floating mb-3">
+            <input asp-for="Model" class="form-control" placeholder="Modelo" required>
+            <label asp-for="Model"></label>
+            <span asp-validation-for="Model" class="text-danger"></span>
+        </div>
+
+        <div class="form-floating mb-3">
+            <input asp-for="Year" class="form-control" placeholder="Año" required>
+            <label asp-for="Year"></label>
+            <span asp-validation-for="Year" class="text-danger"></span>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Guardar</button>
+        <a asp-controller="Home" asp-action="Index" class="btn btn-secondary">Cancelar</a>
+    </form>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

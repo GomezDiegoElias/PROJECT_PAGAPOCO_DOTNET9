@@ -9,7 +9,8 @@ namespace com.project.pagapoco.core.business.Service
 
         public string GenerateQrUrl(Guid qrSessionId, HttpRequest request)
         {
-            return $"{request.Scheme}://{request.Host}/api/qr/login?sessionId={qrSessionId}";
+            //return $"{request.Scheme}://{request.Host}/api/qr/login?sessionId={qrSessionId}";
+            return $"https://gestordepresupuestosmecanica.netlify.app/api/qr/login?sessionId={qrSessionId}";
         }
 
         public byte[] GenerateQrImage(string qrUrl)
