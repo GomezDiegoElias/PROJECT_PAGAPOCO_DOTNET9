@@ -4,6 +4,7 @@ using com.project.pagapoco.app.webmvc.Services.Imp;
 using com.project.pagapoco.core.entities.Dto.Response;
 using System.Net;
 using Microsoft.AspNetCore.Authentication;
+using com.project.pagapoco.app.webapi.Dto.Request;
 
 namespace com.project.pagapoco.app.webmvc.Services
 {
@@ -49,5 +50,39 @@ namespace com.project.pagapoco.app.webmvc.Services
             throw new ApplicationException($"Error al obtener publicaciones: {response.StatusCode}");
 
         }
+
+        public async Task<PublicationResponse> CreatedPublication(PublicationCreatedRequest request)
+        {
+            var token = _httpContextAccessor.HttpContext?.User?.FindFirst("JWT")?.Value;
+
+            if (string.IsNullOrEmpty(token))
+            {
+                throw new ApplicationException("Usuario no autenticado");
+            }
+
+            var httpRequest = new HttpRequestMessage(HttpMethod.Post, "/api/Publication")
+            {
+                Content = JsonContent.Create(request)
+            };
+            httpRequest.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+            var response = await _httpClient.SendAsync(httpRequest);
+
+            if (!response.IsSuccessStatusCode)
+            {
+                var errorContent = await response.Content.ReadAsStringAsync();
+                throw new ApplicationException($"Error al crear publicación: {response.StatusCode} - {errorContent}");
+            }
+
+            var content = await response.Content.ReadFromJsonAsync<ApiResponse<PublicationResponse>>();
+
+            if (content?.Data == null)
+            {
+                throw new ApplicationException("La API no devolvió los datos esperados");
+            }
+
+            return content.Data;
+        }
+
     }
 }

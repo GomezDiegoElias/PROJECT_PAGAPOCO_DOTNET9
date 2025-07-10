@@ -1,0 +1,70 @@
+﻿@model com.project.pagapoco.app.webapi.Dto.Request.PublicationCreatedRequest
+
+@{
+    ViewData["Title"] = "Formulario de Publicación";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<div class="w-50">
+    <form asp-action="FormPublication" method="post">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+        <div class="form-floating mb-3">
+            <input asp-for="Code" class="form-control" placeholder="Código" autocomplete="off">
+            <label asp-for="Code"></label>
+            <span asp-validation-for="Code" class="text-danger"></span>
+        </div>
+
+        <div class="form-floating mb-3">
+            <input asp-for="Title" class="form-control" placeholder="Título" autocomplete="off">
+            <label asp-for="Title"></label>
+            <span asp-validation-for="Title" class="text-danger"></span>
+        </div>
+
+        <div class="form-floating mb-3">
+            <input asp-for="Description" class="form-control" placeholder="Descripción" autocomplete="off">
+            <label asp-for="Description"></label>
+            <span asp-validation-for="Description" class="text-danger"></span>
+        </div>
+
+        <div class="form-floating mb-3">
+            <input asp-for="Price" class="form-control" placeholder="Precio" autocomplete="off">
+            <label asp-for="Price"></label>
+            <span asp-validation-for="Price" class="text-danger"></span>
+        </div>
+
+        <div class="form-floating mb-3">
+            <input asp-for="Brand" class="form-control" placeholder="Marca" autocomplete="off">
+            <label asp-for="Brand"></label>
+            <span asp-validation-for="Brand" class="text-danger"></span>
+        </div>
+
+        <div class="form-floating mb-3">
+            <input asp-for="Model" class="form-control" placeholder="Modelo" autocomplete="off">
+            <label asp-for="Model"></label>
+            <span asp-validation-for="Model" class="text-danger"></span>
+        </div>
+
+        <div class="form-floating mb-3">
+            <input asp-for="Year" class="form-control" placeholder="Año" autocomplete="off">
+            <label asp-for="Year"></label>
+            <span asp-validation-for="Year" class="text-danger"></span>
+        </div>
+
+        <div class="form-floating mb-3">
+            <input asp-for="UserId" class="form-control" placeholder="Usuario" autocomplete="off">
+            <label asp-for="UserId"></label>
+            <span asp-validation-for="UserId" class="text-danger"></span>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Guardar</button>
+        <a asp-controller="Home" asp-action="Index" class="btn btn-secondary">Cancelar</a>
+    </form>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

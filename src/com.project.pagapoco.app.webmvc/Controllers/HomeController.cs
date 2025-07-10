@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using com.project.pagapoco.app.webapi.Dto.Request;
 using com.project.pagapoco.app.webmvc.Models;
 using com.project.pagapoco.app.webmvc.Services.Imp;
 using Microsoft.AspNetCore.Authorization;
@@ -61,6 +62,41 @@ namespace com.project.pagapoco.app.webmvc.Controllers
 
          */
 
+        [HttpGet]
+        public IActionResult FormPublication()
+        {
+            return View(new PublicationCreatedRequest(
+                Code: 0,
+                Title: "",
+                Description: "",
+                Price: 0,
+                Brand: "",
+                Model: "",
+                Year: 0,
+                UserId: 0
+            ));
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> FormPublication(PublicationCreatedRequest request)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(request);
+            }
+
+            try
+            {
+                var publication = await _publicationService.CreatedPublication(request);
+                TempData["SuccessMessage"] = "Publicación creada exitosamente";
+                return RedirectToAction("Index");
+            }
+            catch (ApplicationException ex)
+            {
+                ModelState.AddModelError(string.Empty, ex.Message);
+                return View(request);
+            }
+        }
 
         // Otras funciones del controlador por defecto
         public IActionResult Privacy()
