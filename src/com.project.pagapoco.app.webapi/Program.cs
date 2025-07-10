@@ -64,11 +64,14 @@ builder.Services.AddAuthentication(options =>
 });
 
 // cors
+// Habilitar CORS si tu frontend está en otro origen
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("NewPolicy", app =>
+    options.AddPolicy("AllowAll", policy =>
     {
-        app.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod();
+        policy.AllowAnyOrigin()
+              .AllowAnyHeader()
+              .AllowAnyMethod();
     });
 });
 
@@ -92,9 +95,9 @@ if (app.Environment.IsDevelopment())
     app.MapOpenApi();
 }
 
-app.UseHttpsRedirection();
+// app.UseHttpsRedirection();
 
-app.UseCors("NewPolicy");
+app.UseCors("AllowAll");
 app.UseAuthentication(); // jwt
 app.UseAuthorization();
 
