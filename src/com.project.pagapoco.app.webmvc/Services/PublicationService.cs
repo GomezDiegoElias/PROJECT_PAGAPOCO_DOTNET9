@@ -84,5 +84,43 @@ namespace com.project.pagapoco.app.webmvc.Services
             return content.Data;
         }
 
+        public async Task<PublicationResponse> GetPublicationByCode(long code)
+        {
+            var token = _httpContextAccessor.HttpContext?.User?.FindFirst("JWT")?.Value;
+
+            if (string.IsNullOrEmpty(token))
+            {
+                throw new ApplicationException("Usuario no autenticado");
+            }
+
+            var request = new HttpRequestMessage(HttpMethod.Get, $"/api/Publication/{code}");
+            request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+            var response = await _httpClient.SendAsync(request);
+
+            if (response.IsSuccessStatusCode)
+            {
+                var content = await response.Content.ReadFromJsonAsync<ApiResponse<PublicationResponse>>();
+                if (content?.Data == null)
+                {
+                    throw new ApplicationException("La API no devolvió los datos esperados");
+                }
+                return content.Data;
+            }
+
+            if (response.StatusCode == HttpStatusCode.NotFound)
+            {
+                return null;
+            }
+
+            if (response.StatusCode == HttpStatusCode.Unauthorized)
+            {
+                await _httpContextAccessor.HttpContext.SignOutAsync();
+                throw new UnauthorizedAccessException("Sesión expirada, por favor vuelva a iniciar sesión");
+            }
+
+            throw new ApplicationException($"Error al obtener publicación: {response.StatusCode}");
+        }
+
     }
 }

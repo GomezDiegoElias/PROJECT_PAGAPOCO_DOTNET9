@@ -69,7 +69,7 @@
                                     <td>@publication.Title</td>
                                     <td>@publication.Price</td>
                                     <td>
-                                        <a class="btn btn-outline-info" href="#">Mas detalles</a>
+                                        <a class="btn btn-outline-info btn-details" data-id="@publication.CodePublication">Mas detalles</a>
                                         <a class="btn btn-outline-primary" href="#">Editar</a>
                                         <a class="btn btn-outline-danger" href="#">Eliminar</a>
                                     </td>
@@ -152,7 +152,37 @@
             </div>
         </div>
     </div>
+    <div class="modal fade" id="detailsModal" tabindex="-1" aria-labelledby="detailsModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="detailsModalLabel">Detalles de la Publicación</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" id="modalBodyContent">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
 </div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function() {
+            $('.btn-details').click(function() {
+                var code = $(this).data('id');
+
+                $.get('@Url.Action("GetPublicationDetails", "Home")', { code: code }, function(data) {
+                    $('#modalBodyContent').html(data);
+                    $('#detailsModal').modal('show');
+                });
+            });
+        });
+    </script>
+}
 
 

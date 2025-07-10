@@ -98,6 +98,27 @@ namespace com.project.pagapoco.app.webmvc.Controllers
             }
         }
 
+        [HttpGet]
+        public async Task<IActionResult> GetPublicationDetails(long code)
+        {
+            try
+            {
+                var publication = await _publicationService.GetPublicationByCode(code);
+
+                if (publication == null)
+                {
+                    return NotFound();
+                }
+
+                return PartialView("_PublicationDetails", publication);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error al obtener detalles de publicación");
+                return StatusCode(500);
+            }
+        }
+
         // Otras funciones del controlador por defecto
         public IActionResult Privacy()
         {
