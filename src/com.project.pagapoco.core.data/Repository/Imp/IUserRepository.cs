@@ -17,6 +17,7 @@ namespace com.project.pagapoco.core.data.Repository.Imp
         public Task<User> Update(User user);
         public Task<bool> DeleteByDni(long dni);
         public Task<User?> FindByEmail(string email);
+        public Task<User?> FindByQrSessionId(Guid sessionId);
 
     }
 }

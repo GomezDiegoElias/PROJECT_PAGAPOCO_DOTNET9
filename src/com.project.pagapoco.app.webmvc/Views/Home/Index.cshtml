@@ -15,29 +15,30 @@
             <div class="mb-3">
                 <a class="btn btn-primary"
                    asp-area=""
-                   asp-controller="Users"
-                   asp-action="UserForm">
+                   asp-controller="Home"
+                   asp-action="FormPublication">
                     Nuevo publicación
                 </a>
             </div>
 
             <!-- formulario de búsqueda -->
             <div class="input-group mb-3">
-                <form method="get" asp-action="Search" class="d-flex w-100">
+                <form method="get" asp-action="Search" class="d-flex w-100" id="searchForm">
                     <input type="hidden" name="pageSize" value="@ViewBag.PageSize" />
 
-                    <span class="input-group-text" id="inputGroup-sizing-default">Buscar por Codigo</span>
+                    <span class="input-group-text" id="inputGroup-sizing-default">Buscar por Código</span>
                     <input type="number"
                            class="form-control"
-                           name="id"
-                           value="@ViewBag.SearchId"
-                           aria-label="Buscar por Codigo"
+                           name="code"
+                           id="searchCode"
+                           value="@ViewBag.SearchCode"
+                           aria-label="Buscar por Código"
                            aria-describedby="inputGroup-sizing-default"
                            min="1"
                            required>
 
                     <div class="d-flex ms-2 gap-2">
-                        <button type="button" class="btn btn-success">Buscar</button>
+                        <button type="submit" class="btn btn-success">Buscar</button>
                         <a asp-action="Index"
                            asp-route-page="1"
                            asp-route-pageSize="@ViewBag.PageSize"
@@ -69,9 +70,13 @@
                                     <td>@publication.Title</td>
                                     <td>@publication.Price</td>
                                     <td>
-                                        <a class="btn btn-outline-info" href="#">Mas detalles</a>
-                                        <a class="btn btn-outline-primary" href="#">Editar</a>
-                                        <a class="btn btn-outline-danger" href="#">Eliminar</a>
+                                        <a class="btn btn-outline-info btn-details" data-id="@publication.CodePublication">Mas detalles</a>
+                                        <a class="btn btn-outline-primary"
+                                           asp-action="EditPublication"
+                                           asp-route-code="@publication.CodePublication">
+                                            Editar
+                                        </a>
+                                        <button class="btn btn-outline-danger btn-delete" data-id="@publication.CodePublication">Eliminar</button>
                                     </td>
                                 </tr>
                             }
@@ -152,7 +157,55 @@
             </div>
         </div>
     </div>
+    <div class="modal fade" id="detailsModal" tabindex="-1" aria-labelledby="detailsModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="detailsModalLabel">Detalles de la Publicación</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" id="modalBodyContent">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
 </div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function() {
+            // Para los detalles
+            $('.btn-details').click(function() {
+                var code = $(this).data('id');
+                $.get('@Url.Action("GetPublicationDetails", "Home")', { code: code }, function(data) {
+                    $('#modalBodyContent').html(data);
+                    $('#detailsModal').modal('show');
+                });
+            });
+
+            // Para eliminar
+            $('.btn-delete').click(function() {
+                var code = $(this).data('id');
+                if (confirm('¿Estás seguro de que deseas eliminar esta publicación?')) {
+                    $.ajax({
+                        url: '@Url.Action("DeletePublication", "Home")',
+                        type: 'DELETE',
+                        data: { code: code },
+                        success: function() {
+                            window.location.reload();
+                        },
+                        error: function(xhr) {
+                            alert('Error al eliminar la publicación: ' + xhr.responseText);
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+}
 
 

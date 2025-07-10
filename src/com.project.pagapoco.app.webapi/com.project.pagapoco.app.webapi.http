@@ -62,8 +62,8 @@ Content-Type: application/json
     "dni": 44745058,
     "firstname": "Sebastian Esteban",
     "lastname": "Gomez",
-    "email": "micorreosebastian@gmail.com",
-    "password": "123456"
+    "email": "ninja@gmail.com",
+    "password": "1234"
 }
 
 ###

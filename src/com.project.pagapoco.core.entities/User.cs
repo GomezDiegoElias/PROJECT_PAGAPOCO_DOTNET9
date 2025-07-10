@@ -9,9 +9,18 @@ namespace com.project.pagapoco.core.entities
     public class User
     {
 
+        //[Key]
+        //[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        //[Column(TypeName = "uniqueidentifier")]
+        //public Guid Id { get; set; }
+
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [Column("id")]
         public int Id { get; set; }
+
+        [Column("qr_session_id", TypeName = "uniqueidentifier")]
+        public Guid QrSessionId { get; set; } = Guid.NewGuid();
 
         [Required]
         [StringLength(20)]

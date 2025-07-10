@@ -104,6 +104,7 @@ namespace com.project.pagapoco.core.data
                 // Crea una nueva instancia de User y la agrega a la lista
                 users.Add(new User
                 {
+                    //Id = reader.GetGuid("Id"),
                     Id = reader.GetInt32("Id"),
                     Dni = reader.GetInt64("Dni"),
                     FirstName = reader.GetString("FirstName"),
