@@ -23,21 +23,22 @@
 
             <!-- formulario de búsqueda -->
             <div class="input-group mb-3">
-                <form method="get" asp-action="Search" class="d-flex w-100">
+                <form method="get" asp-action="Search" class="d-flex w-100" id="searchForm">
                     <input type="hidden" name="pageSize" value="@ViewBag.PageSize" />
 
-                    <span class="input-group-text" id="inputGroup-sizing-default">Buscar por Codigo</span>
+                    <span class="input-group-text" id="inputGroup-sizing-default">Buscar por Código</span>
                     <input type="number"
                            class="form-control"
-                           name="id"
-                           value="@ViewBag.SearchId"
-                           aria-label="Buscar por Codigo"
+                           name="code"
+                           id="searchCode"
+                           value="@ViewBag.SearchCode"
+                           aria-label="Buscar por Código"
                            aria-describedby="inputGroup-sizing-default"
                            min="1"
                            required>
 
                     <div class="d-flex ms-2 gap-2">
-                        <button type="button" class="btn btn-success">Buscar</button>
+                        <button type="submit" class="btn btn-success">Buscar</button>
                         <a asp-action="Index"
                            asp-route-page="1"
                            asp-route-pageSize="@ViewBag.PageSize"
