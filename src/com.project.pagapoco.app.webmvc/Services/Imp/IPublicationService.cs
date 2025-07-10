@@ -9,5 +9,6 @@ namespace com.project.pagapoco.app.webmvc.Services.Imp
         public Task<PaginatedResponse<PublicationResponse>> GetPublications(int pageIndex, int pageSize);
         public Task<PublicationResponse> CreatedPublication(PublicationCreatedRequest request);
         public Task<PublicationResponse> GetPublicationByCode(long code);
+        public Task<bool> DeletePublication(long code);
     }
 }

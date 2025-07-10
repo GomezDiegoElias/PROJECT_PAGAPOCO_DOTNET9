@@ -122,5 +122,29 @@ namespace com.project.pagapoco.app.webmvc.Services
             throw new ApplicationException($"Error al obtener publicación: {response.StatusCode}");
         }
 
+        public async Task<bool> DeletePublication(long code)
+        {
+            
+            var token = _httpContextAccessor.HttpContext?.User?.FindFirst("JWT")?.Value;
+
+            if (string.IsNullOrEmpty(token))
+            {
+                throw new ApplicationException("Usuario no autenticado");
+            }
+
+            var request = new HttpRequestMessage(HttpMethod.Delete, $"/api/Publication/{code}");
+            request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+            var response = await _httpClient.SendAsync(request);
+
+            if (response.IsSuccessStatusCode)
+            {
+                return true;
+            }
+
+            throw new ApplicationException($"Error al eliminar publicación: {response.StatusCode}");
+
+        }
+
     }
 }

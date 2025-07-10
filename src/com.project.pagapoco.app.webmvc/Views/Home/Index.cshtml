@@ -71,7 +71,7 @@
                                     <td>
                                         <a class="btn btn-outline-info btn-details" data-id="@publication.CodePublication">Mas detalles</a>
                                         <a class="btn btn-outline-primary" href="#">Editar</a>
-                                        <a class="btn btn-outline-danger" href="#">Eliminar</a>
+                                        <button class="btn btn-outline-danger btn-delete" data-id="@publication.CodePublication">Eliminar</button>
                                     </td>
                                 </tr>
                             }
@@ -173,13 +173,31 @@
 @section Scripts {
     <script>
         $(document).ready(function() {
+            // Para los detalles
             $('.btn-details').click(function() {
                 var code = $(this).data('id');
-
                 $.get('@Url.Action("GetPublicationDetails", "Home")', { code: code }, function(data) {
                     $('#modalBodyContent').html(data);
                     $('#detailsModal').modal('show');
                 });
+            });
+
+            // Para eliminar
+            $('.btn-delete').click(function() {
+                var code = $(this).data('id');
+                if (confirm('¿Estás seguro de que deseas eliminar esta publicación?')) {
+                    $.ajax({
+                        url: '@Url.Action("DeletePublication", "Home")',
+                        type: 'DELETE',
+                        data: { code: code },
+                        success: function() {
+                            window.location.reload(); // Recarga la página para ver los cambios
+                        },
+                        error: function(xhr) {
+                            alert('Error al eliminar la publicación: ' + xhr.responseText);
+                        }
+                    });
+                }
             });
         });
     </script>

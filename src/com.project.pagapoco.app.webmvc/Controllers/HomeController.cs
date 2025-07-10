@@ -119,6 +119,24 @@ namespace com.project.pagapoco.app.webmvc.Controllers
             }
         }
 
+        [HttpDelete]
+        public async Task<IActionResult> DeletePublication(long code)
+        {
+            try
+            {
+                var result = await _publicationService.DeletePublication(code);
+                if (result)
+                {
+                    return Ok(); // Retorna 200 OK si fue exitoso
+                }
+                return BadRequest("No se pudo eliminar la publicación");
+            }
+            catch (ApplicationException ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
+
         // Otras funciones del controlador por defecto
         public IActionResult Privacy()
         {
